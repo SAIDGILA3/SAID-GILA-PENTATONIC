@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Said Gila Pentatonic Scale Master</title>
+  <meta name="description" content="Master pentatonic scales with interactive fretboard visualization, practice modes, and theory lessons.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23c9a14a' width='100' height='100'/%3E%3Ctext x='50' y='60' font-size='60' font-weight='bold' text-anchor='middle' fill='%23161312'%3EG%3C/text%3E%3C/svg%3E">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+    :root {
+      --primary: #c9a14a;
+      --accent-orange: #e8743b;
+      --accent-teal: #4a9d8f;
+      --dark-bg: #0a0a0a;
+      --dark-surface: #1a1a1a;
+      --dark-card: #252525;
+      --text-primary: #ffffff;
+      --text-secondary: #b0b0b0;
+      --border: #333333;
+      --success: #10b981;
+      --warning: #f59e0b;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--dark-bg);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Navigation */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(10, 10, 10, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 0;
+    }
+
+    .nav-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    /* Hero */
+    .hero {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(32px, 8vw, 64px);
+      font-weight: 800;
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero .subtitle {
+      font-size: 18px;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 32px;
+      line-height: 1.8;
+    }
+
+    .cta-group {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 32px;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      font-size: 14px;
+      transition: all 0.3s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: var(--dark-bg);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(201, 161, 74, 0.2);
+    }
+
+    .btn-secondary {
+      background: var(--dark-card);
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    .btn-secondary:hover {
+      background: var(--primary);
+      color: var(--dark-bg);
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Sections */
+    section {
+      padding: 80px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    section h2 {
+      font-size: clamp(28px, 6vw, 48px);
+      font-weight: 800;
+      margin-bottom: 48px;
+      text-align: center;
+      letter-spacing: -0.02em;
+    }
+
+    /* Controls */
+    .controls-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .control-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--primary);
+    }
+
+    .pill-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      padding: 10px 16px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .pill:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .pill.active {
+      background: var(--primary);
+      color: var(--dark-bg);
+      border-color: var(--primary);
+      font-weight: 600;
+    }
+
+    .pill.active.accent-orange {
+      background: var(--accent-orange);
+      border-color: var(--accent-orange);
+    }
+
+    .pill.active.accent-teal {
+      background: var(--accent-teal);
+      border-color: var(--accent-teal);
+    }
+
+    /* Fretboard Panel */
+    .fretboard-panel {
+      background: linear-gradient(135deg, var(--dark-card), var(--dark-surface));
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      margin-bottom: 32px;
+    }
+
+    .fretboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .fretboard-title {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .fret-indicator {
+      background: var(--dark-surface);
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: 'JetBrains Mono', monospace;
+      border: 1px solid var(--border);
+    }
+
+    .fretboard-scroll {
+      overflow-x: auto;
+      padding-bottom: 16px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    svg {
+      display: block;
+      min-width: 100%;
+    }
+
+    .note-circle {
+      stroke: rgba(255, 255, 255, 0.15);
+      stroke-width: 1.5;
+    }
+
+    .note-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 11px;
+      fill: var(--dark-bg);
+      text-anchor: middle;
+      dominant-baseline: central;
+    }
+
+    .fret-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      fill: var(--text-secondary);
+      text-anchor: middle;
+    }
+
+    .string-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      fill: var(--text-secondary);
+      text-anchor: end;
+      font-weight: 600;
+    }
+
+    /* Legend */
+    .legend {
+      display: flex;
+      gap: 24px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* Notes */
+    .notes-display {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    .note-badge {
+      padding: 8px 14px;
+      background: var(--dark-surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+    }
+
+    .note-badge.root {
+      background: var(--primary);
+      color: var(--dark-bg);
+      border-color: var(--primary);
+    }
+
+    .note-badge.root.accent-orange {
+      background: var(--accent-orange);
+    }
+
+    .note-badge.root.accent-teal {
+      background: var(--accent-teal);
+    }
+
+    /* Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .feature-card {
+      background: linear-gradient(135deg, var(--dark-card), var(--dark-surface));
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      transition: all 0.3s;
+    }
+
+    .feature-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-4px);
+    }
+
+    .feature-icon {
+      font-size: 32px;
+      margin-bottom: 16px;
+    }
+
+    .feature-card h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* Theory Section */
+    .theory-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .theory-card {
+      background: var(--dark-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+    }
+
+    .theory-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--primary);
+    }
+
+    .theory-card p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+
+    .theory-card code {
+      display: block;
+      background: var(--dark-surface);
+      padding: 12px;
+      border-radius: 6px;
+      margin-top: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--primary);
+      overflow-x: auto;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--dark-surface);
+      border-top: 1px solid var(--border);
+      padding: 48px 20px;
+      text-align: center;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    footer p {
+      color: var(--text-secondary);
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .footer-links a {
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent-orange);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links {
+        gap: 16px;
+      }
+
+      .hero {
+        padding: 60px 20px;
+      }
+
+      section {
+        padding: 60px 0;
+      }
+
+      .fretboard-panel {
+        padding: 20px;
+      }
+
+      .controls-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    section {
+      animation: fadeInUp 0.6s ease-out;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-content">
+      <a href="#" class="logo">🎸 SAID GILA</a>
+      <ul class="nav-links">
+        <li><a href="#explorer">Explorer</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#theory">Theory</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1>Master Pentatonic Scales</h1>
+    <p class="subtitle">Interactive fretboard explorer with visual learning tools, practice modes, and comprehensive music theory guides for guitarists of all levels.</p>
+    <div class="cta-group">
+      <a href="#explorer" class="btn btn-primary">Start Exploring</a>
+      <a href="#theory" class="btn btn-secondary">Learn Theory</a>
+    </div>
+  </section>
+
+  <!-- Explorer -->
+  <section id="explorer">
+    <div class="container">
+      <h2>Pentatonic Explorer</h2>
+
+      <!-- Controls -->
+      <div class="controls-grid">
+        <div class="control-group">
+          <label class="control-label">Root Note</label>
+          <div class="pill-group" id="rootRow"></div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label">Scale Type</label>
+          <div class="pill-group" id="scaleRow"></div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label">Position (Box)</label>
+          <div class="pill-group" id="positionRow"></div>
+        </div>
+      </div>
+
+      <!-- Fretboard -->
+      <div class="fretboard-panel">
+        <div class="fretboard-header">
+          <h3 class="fretboard-title" id="shapeTitle"></h3>
+          <span class="fret-indicator" id="fretRange"></span>
+        </div>
+        <div class="fretboard-scroll">
+          <svg id="board" viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg"></svg>
+        </div>
+        <div class="legend">
+          <span class="legend-item">
+            <span class="dot" id="legendRootDot"></span>
+            Root Note
+          </span>
+          <span class="legend-item">
+            <span class="dot" style="background: var(--text-primary); opacity: 0.7;"></span>
+            Scale Note
+          </span>
+        </div>
+        <div class="notes-display" id="noteStrip"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features">
+    <div class="container">
+      <h2>Why Choose This Tool</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3>Visual Learning</h3>
+          <p>See exactly where pentatonic scales live on your fretboard with color-coded positions and clear note identification.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>All 5 Positions</h3>
+          <p>Master the CAGED system by exploring all five pentatonic box positions for deeper fretboard understanding.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔄</div>
+          <h3>Major & Minor</h3>
+          <p>Switch between major and minor pentatonic scales instantly to explore different moods and applications.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎼</div>
+          <h3>All Root Notes</h3>
+          <p>Practice in any key from A to G# with automatic fretboard calculations and visual adjustments.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📱</div>
+          <h3>Mobile Friendly</h3>
+          <p>Practice anywhere with a fully responsive interface designed for phones, tablets, and desktops.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Instant Updates</h3>
+          <p>Real-time fretboard visualization updates as you change scales, keys, and positions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Theory -->
+  <section id="theory">
+    <div class="container">
+      <h2>Pentatonic Theory</h2>
+      <div class="theory-grid">
+        <div class="theory-card">
+          <h3>Minor Pentatonic</h3>
+          <p>The most popular scale in blues, rock, and many other genres. Built from the natural minor scale with the 2nd and 6th degrees removed.</p>
+          <code>Root, m3, P4, P5, m7</code>
+        </div>
+        <div class="theory-card">
+          <h3>Major Pentatonic</h3>
+          <p>A bright, uplifting scale commonly used in pop, country, and funk. It's the relative major to the minor pentatonic.</p>
+          <code>Root, M2, M3, P5, M6</code>
+        </div>
+        <div class="theory-card">
+          <h3>CAGED System</h3>
+          <p>The five pentatonic positions correspond to the CAGED chord shapes (C, A, G, E, D). Memorizing these shapes unlocks the entire fretboard.</p>
+          <code>5 Interconnected Positions</code>
+        </div>
+        <div class="theory-card">
+          <h3>Relative Keys</h3>
+          <p>A minor pentatonic and C major pentatonic share the same notes. Understanding relative keys helps you navigate between modes.</p>
+          <code>Am pent = C maj pent</code>
+        </div>
+        <div class="theory-card">
+          <h3>Blues Applications</h3>
+          <p>Add the blue note (flat 5) to either pentatonic scale for classic blues sounds. Experiment with bending between notes.</p>
+          <code>Am + Eb = Blues sound</code>
+        </div>
+        <div class="theory-card">
+          <h3>Practice Tips</h3>
+          <p>Start with one position, then move through all five. Connect positions to develop fluency. Sing the scale to internalize the sound.</p>
+          <code>Consistency > Speed</code>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <div class="container" style="text-align: center; max-width: 600px;">
+      <h2>Get Started Today</h2>
+      <p style="font-size: 16px; color: var(--text-secondary); margin-bottom: 32px;">
+        Begin your pentatonic journey. Explore scales, understand theory, and develop your fretboard mastery with our interactive tools.
+      </p>
+      <a href="#explorer" class="btn btn-primary">Open Explorer</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <p>Built with passion for guitarists and musicians worldwide</p>
+      <div class="footer-links">
+        <a href="https://github.com/SAIDGILA3">GitHub</a>
+        <a href="#explorer">Explorer</a>
+        <a href="#theory">Theory</a>
+      </div>
+      <p>© 2026 Said Gila. All rights reserved. | Pentatonic Scale Master</p>
+    </div>
+  </footer>
+
+  <script>
+    const CHROMATIC = ["A","A#","B","C","C#","D","D#","E","F","F#","G","G#"];
+    const STRING_OPEN = [7, 2, 10, 5, 0, 7];
+    const STRING_NAMES = ["E","B","G","D","A","E"];
+
+    const MINOR_PENT = [0, 3, 5, 7, 10];
+    const MAJOR_PENT = [0, 2, 4, 7, 9];
+
+    function mod(n, m){ return ((n % m) + m) % m; }
+    function noteSemitoneAt(stringIdx, fret){ return mod(STRING_OPEN[stringIdx] + fret, 12); }
+    function noteName(semitone){ return CHROMATIC[mod(semitone, 12)]; }
+
+    const A_MINOR_TEMPLATE = [
+      { start: 5,  end: 8,  perString: [[5,8],[5,8],[5,7],[5,7],[5,7],[5,8]] },
+      { start: 7,  end: 10, perString: [[8,10],[8,10],[7,9],[7,10],[7,10],[8,10]] },
+      { start: 10, end: 12, perString: [[10,12],[10,13],[9,12],[10,12],[10,12],[10,12]] },
+      { start: 12, end: 15, perString: [[12,15],[13,15],[12,14],[12,14],[12,15],[12,15]] },
+      { start: 14, end: 17, perString: [[15,17],[15,17],[14,17],[14,17],[15,17],[15,17]] },
+    ];
+
+    function buildShiftedTemplate(shift){
+      let boxes = A_MINOR_TEMPLATE.map(box => {
+        let newStart = box.start + shift;
+        let newEnd = box.end + shift;
+        let perString = box.perString.map(frets => frets.map(f => f + shift));
+        if(newStart > 14){
+          newStart -= 12; newEnd -= 12;
+          perString = perString.map(frets => frets.map(f => f - 12));
+        }
+        return { start: newStart, end: newEnd, perString };
+      });
+      const hasNeg = boxes.some(b => b.perString.some(fr => fr.some(f => f < 0)));
+      if(hasNeg){
+        boxes = boxes.map(box => ({
+          start: box.start + 12,
+          end: box.end + 12,
+          perString: box.perString.map(frets => frets.map(f => f + 12))
+        }));
+      }
+      boxes.sort((a,b)=>a.start-b.start);
+      return boxes.map((b,i) => ({...b, index: i+1}));
+    }
+
+    function minorBoxesForRoot(root){
+      const shift = mod(CHROMATIC.indexOf(root) - CHROMATIC.indexOf("A"), 12);
+      return buildShiftedTemplate(shift);
+    }
+
+    function majorBoxesForRoot(root){
+      const relMinorIdx = mod(CHROMATIC.indexOf(root) - 3, 12);
+      const relMinorRoot = CHROMATIC[relMinorIdx];
+      const shift = mod(CHROMATIC.indexOf(relMinorRoot) - CHROMATIC.indexOf("A"), 12);
+      return buildShiftedTemplate(shift);
+    }
+
+    let state = {
+      root: "A",
+      scale: "minor",
+      position: 1
+    };
+
+    const rootRow = document.getElementById('rootRow');
+    CHROMATIC.forEach(note => {
+      const btn = document.createElement('button');
+      btn.className = 'pill';
+      btn.textContent = note;
+      btn.dataset.root = note;
+      if(note === state.root) btn.classList.add('active');
+      btn.onclick = () => { state.root = note; render(); };
+      rootRow.appendChild(btn);
+    });
+
+    const scaleRow = document.getElementById('scaleRow');
+    ['minor', 'major'].forEach(s => {
+      const btn = document.createElement('button');
+      btn.className = 'pill';
+      btn.textContent = s === 'minor' ? 'Minor Pentatonic' : 'Major Pentatonic';
+      btn.dataset.scale = s;
+      if(s === state.scale) btn.classList.add('active');
+      btn.onclick = () => { state.scale = s; render(); };
+      scaleRow.appendChild(btn);
+    });
+
+    const positionRow = document.getElementById('positionRow');
+    [1,2,3,4,5].forEach(p => {
+      const btn = document.createElement('button');
+      btn.className = 'pill';
+      btn.textContent = 'Pos ' + p;
+      btn.dataset.pos = p;
+      if(p === state.position) btn.classList.add('active');
+      btn.onclick = () => { state.position = p; render(); };
+      positionRow.appendChild(btn);
+    });
+
+    function refreshActiveStates(){
+      document.querySelectorAll('#rootRow .pill').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.root === state.root);
+      });
+      document.querySelectorAll('#scaleRow .pill').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.scale === state.scale);
+      });
+      document.querySelectorAll('#positionRow .pill').forEach(btn => {
+        btn.classList.toggle('active', Number(btn.dataset.pos) === state.position);
+      });
+
+      const accentClass = state.scale === 'minor' ? 'accent-orange' : 'accent-teal';
+      document.querySelectorAll('#rootRow .pill.active, #positionRow .pill.active').forEach(btn => {
+        btn.classList.remove('accent-orange', 'accent-teal');
+        btn.classList.add(accentClass);
+      });
+
+      const dotColor = state.scale === 'minor' ? 'var(--accent-orange)' : 'var(--accent-teal)';
+      document.getElementById('legendRootDot').style.background = dotColor;
+    }
+
+    function render(){
+      refreshActiveStates();
+
+      const rootSemitone = CHROMATIC.indexOf(state.root);
+      const boxes = state.scale === 'minor' ? minorBoxesForRoot(state.root) : majorBoxesForRoot(state.root);
+      const box = boxes[state.position - 1] || boxes[0];
+
+      const scaleLabel = state.scale === 'minor' ? 'Minor' : 'Major';
+      const accentSpan = `<span style="color: ${state.scale === 'minor' ? 'var(--accent-orange)' : 'var(--accent-teal)'}">${state.root} ${scaleLabel} — Position ${box.index}</span>`;
+      document.getElementById('shapeTitle').innerHTML = accentSpan;
+      document.getElementById('fretRange').textContent = `Frets ${box.start}–${box.end}`;
+
+      const svg = document.getElementById('board');
+      svg.innerHTML = '';
+
+      const padLeft = 80;
+      const padRight = 40;
+      const padTop = 30;
+      const padBottom = 40;
+      const width = 700;
+      const stringGap = 42;
+      const boardHeight = stringGap * 5;
+
+      let minF = box.start, maxF = box.end;
+      box.perString.forEach(frets => frets.forEach(f => {
+        if(f < minF) minF = f;
+        if(f > maxF) maxF = f;
+      }));
+      const displayStart = minF - 0.5;
+      const displayEnd = maxF + 0.5;
+      const fretSpan = displayEnd - displayStart;
+      const boardWidth = width - padLeft - padRight;
+      const fretGap = boardWidth / fretSpan;
+
+      svg.setAttribute('viewBox', `0 0 ${width} ${padTop + boardHeight + padBottom}`);
+
+      function fretX(fret){ return padLeft + (fret - displayStart) * fretGap; }
+      function stringY(idx){ return padTop + idx * stringGap; }
+
+      for(let f = minF; f <= maxF + 1; f++){
+        const x = fretX(f);
+        const isNut = f === 0;
+        const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+        line.setAttribute('x1', x);
+        line.setAttribute('x2', x);
+        line.setAttribute('y1', padTop);
+        line.setAttribute('y2', padTop + boardHeight);
+        line.setAttribute('stroke', isNut ? '#c9a14a' : '#444444');
+        line.setAttribute('stroke-width', isNut ? 6 : 2);
+        svg.appendChild(line);
+
+        if(f <= maxF){
+          const num = document.createElementNS('http://www.w3.org/2000/svg','text');
+          num.setAttribute('x', x + fretGap/2);
+          num.setAttribute('y', padTop + boardHeight + 22);
+          num.setAttribute('class', 'fret-num');
+          num.textContent = f;
+          svg.appendChild(num);
+        }
+      }
+
+      for(let i = 0; i < 6; i++){
+        const y = stringY(i);
+        const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+        line.setAttribute('x1', padLeft);
+        line.setAttribute('x2', width - padRight);
+        line.setAttribute('y1', y);
+        line.setAttribute('y2', y);
+        line.setAttribute('stroke', '#e0e0e0');
+        line.setAttribute('stroke-width', i >= 4 ? 3.5 : (i===0?1.8:2.5));
+        svg.appendChild(line);
+
+        const label = document.createElementNS('http://www.w3.org/2000/svg','text');
+        label.setAttribute('x', padLeft - 16);
+        label.setAttribute('y', y + 5);
+        label.setAttribute('class', 'string-label');
+        label.textContent = STRING_NAMES[i];
+        svg.appendChild(label);
+      }
+
+      const rootColor = state.scale === 'minor' ? '#e8743b' : '#4a9d8f';
+      for(let s = 0; s < 6; s++){
+        box.perString[s].forEach(fret => {
+          const sem = noteSemitoneAt(s, fret);
+          const isRoot = sem === rootSemitone;
+          const x = fretX(fret) + fretGap/2;
+          const y = stringY(s);
+
+          const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+          circle.setAttribute('cx', x);
+          circle.setAttribute('cy', y);
+          circle.setAttribute('r', 13);
+          circle.setAttribute('fill', isRoot ? rootColor : 'rgba(255, 255, 255, 0.85)');
+          circle.setAttribute('class', 'note-circle');
+          svg.appendChild(circle);
+
+          const text = document.createElementNS('http://www.w3.org/2000/svg','text');
+          text.setAttribute('x', x);
+          text.setAttribute('y', y + 1);
+          text.setAttribute('class', 'note-text');
+          text.textContent = noteName(sem);
+          svg.appendChild(text);
+        });
+      }
+
+      const scaleNotes = (state.scale === 'minor' ? MINOR_PENT : MAJOR_PENT).map(iv => noteName(rootSemitone + iv));
+      const strip = document.getElementById('noteStrip');
+      strip.innerHTML = '';
+      scaleNotes.forEach(n => {
+        const chip = document.createElement('span');
+        const classes = ['note-badge'];
+        if(n === state.root) {
+          classes.push('root');
+          classes.push(state.scale === 'minor' ? 'accent-orange' : 'accent-teal');
+        }
+        chip.className = classes.join(' ');
+        chip.textContent = n;
+        strip.appendChild(chip);
+      });
+    }
+
+    render();
+  </script>
+</body>
+</html>

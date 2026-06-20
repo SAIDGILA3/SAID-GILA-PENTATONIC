@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎸</text></svg>">
+<meta property="og:title" content="Said Gila Pentatonic">
+<meta property="og:description" content="Peneroka skala pentatonik gitar — pilih root, minor/major, posisi 1–5">
+<meta name="description" content="Skala pentatonik interaktif untuk gitar. Oleh Said Gila.">
+<title>Said Gila Pentatonic</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@400;600;700;800&display=swap');
+
+  :root{
+    --bg: #161312;
+    --wood: #2b211a;
+    --wood-light: #3d2f24;
+    --string: #d8cdb8;
+    --fret: #8a7c68;
+    --root-min: #e8743b;
+    --root-maj: #4a9d8f;
+    --note: #e0d6c2;
+    --paper: #efe7d6;
+    --ink: #161312;
+    --accent: #c9a14a;
+  }
+
+  *{ box-sizing: border-box; }
+
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--paper);
+    font-family: 'Sora', sans-serif;
+    padding: 28px 14px 60px;
+    min-height: 100vh;
+  }
+
+  .wrap{ max-width: 920px; margin: 0 auto; }
+
+  header{ margin-bottom: 22px; }
+
+  .eyebrow{
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 8px;
+  }
+
+  h1{
+    font-weight: 800;
+    font-size: clamp(26px, 5.5vw, 38px);
+    margin: 0 0 6px;
+    letter-spacing: -0.02em;
+  }
+
+  .sub{
+    font-size: 13.5px;
+    color: #a89c87;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .controls{
+    margin: 22px 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .control-row{
+    display:flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .control-label{
+    font-family:'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #897c68;
+  }
+
+  .pill-row{
+    display:flex;
+    gap: 7px;
+    flex-wrap: wrap;
+  }
+
+  .pill{
+    font-family:'Space Mono', monospace;
+    font-size: 13px;
+    background: transparent;
+    border: 1px solid #4a4036;
+    color: #bdb29c;
+    padding: 8px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    min-width: 44px;
+  }
+  .pill:hover{ border-color: var(--accent); color: var(--paper); }
+  .pill.active.minor{
+    background: var(--root-min);
+    border-color: var(--root-min);
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .pill.active.major{
+    background: var(--root-maj);
+    border-color: var(--root-maj);
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  .scale-toggle{
+    display:flex;
+    border: 1px solid #4a4036;
+    border-radius: 999px;
+    overflow: hidden;
+    width: fit-content;
+  }
+  .scale-toggle button{
+    font-family:'Space Mono', monospace;
+    font-size: 13px;
+    background: transparent;
+    border: none;
+    color: #bdb29c;
+    padding: 9px 22px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .scale-toggle button.active.minor{ background: var(--root-min); color: var(--ink); font-weight: 700; }
+  .scale-toggle button.active.major{ background: var(--root-maj); color: var(--ink); font-weight: 700; }
+
+  .position-row{ display:flex; gap:7px; }
+  .position-row .pill{ flex: 1; text-align:center; }
+
+  .panel{
+    background: linear-gradient(180deg, var(--wood-light), var(--wood));
+    border-radius: 16px;
+    padding: 26px 18px 20px;
+    border: 1px solid #4a3a2c;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+  }
+
+  .panel-head{
+    display:flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .shape-title{
+    font-size: 21px;
+    font-weight: 800;
+    margin:0;
+  }
+  .shape-title .accent{ color: var(--root-min); }
+  .shape-title .accent.major{ color: var(--root-maj); }
+
+  .fret-range{
+    font-family:'Space Mono', monospace;
+    font-size: 12px;
+    color: #cdbfa0;
+    background: rgba(0,0,0,0.25);
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+
+  .board-scroll{ overflow-x: auto; padding-bottom: 6px; }
+
+  svg{ display:block; min-width: 540px; }
+
+  .note-circle{ stroke: rgba(0,0,0,0.4); stroke-width: 1.5; }
+  .note-text{
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: 10.5px;
+    fill: var(--ink);
+    text-anchor: middle;
+    dominant-baseline: central;
+  }
+  .fret-num{
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    fill: #8a7c68;
+    text-anchor: middle;
+  }
+  .string-label{
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    fill: #a89c87;
+    text-anchor: end;
+  }
+
+  .legend{
+    display:flex;
+    gap: 18px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+  }
+  .legend-item{ display:flex; align-items:center; gap:7px; color:#bdb29c; }
+  .dot{ width:13px; height:13px; border-radius:50%; display:inline-block; }
+
+  .note-strip{
+    margin-top: 16px;
+    display:flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .note-chip{
+    font-family:'Space Mono', monospace;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    background: rgba(0,0,0,0.22);
+    color: #cdbfa0;
+  }
+  .note-chip.root.minor{ background: var(--root-min); color: var(--ink); font-weight:700; }
+  .note-chip.root.major{ background: var(--root-maj); color: var(--ink); font-weight:700; }
+
+  footer{
+    margin-top: 20px;
+    font-size: 12.5px;
+    color: #897c68;
+    line-height: 1.6;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Pentatonic Explorer</p>
+    <h1>Said Gila Pentatonic</h1>
+    <p class="sub">Pilih root note, jenis scale (minor/major), dan posisi 1–5. Diagram fretboard auto-kemaskini.</p>
+  </header>
+
+  <div class="controls">
+    <div class="control-row">
+      <span class="control-label">Root Note</span>
+      <div class="pill-row" id="rootRow"></div>
+    </div>
+
+    <div class="control-row">
+      <span class="control-label">Jenis Scale</span>
+      <div class="scale-toggle" id="scaleToggle">
+        <button class="minor active" data-scale="minor">Minor Pentatonic</button>
+        <button class="major" data-scale="major">Major Pentatonic</button>
+      </div>
+    </div>
+
+    <div class="control-row">
+      <span class="control-label">Posisi (Box)</span>
+      <div class="position-row" id="positionRow"></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <h2 class="shape-title" id="shapeTitle"></h2>
+      <span class="fret-range" id="fretRange"></span>
+    </div>
+    <div class="board-scroll">
+      <svg id="board" viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+    <div class="legend">
+      <span class="legend-item"><span class="dot" id="legendRootDot"></span> Root</span>
+      <span class="legend-item"><span class="dot" style="background:var(--note)"></span> Nota scale</span>
+    </div>
+    <div class="note-strip" id="noteStrip"></div>
+  </div>
+
+  <footer>
+    Posisi 1–5 bersambung sepanjang fretboard ikut sistem CAGED. By Said Gila
+  </footer>
+</div>
+
+<script>
+const CHROMATIC = ["A","A#","B","C","C#","D","D#","E","F","F#","G","G#"];
+// semitone index (A=0) of each open string, top row = high E down to low E
+const STRING_OPEN = [7, 2, 10, 5, 0, 7];
+const STRING_NAMES = ["E","B","G","D","A","E"];
+
+const MINOR_PENT = [0, 3, 5, 7, 10]; // 1, b3, 4, 5, b7
+const MAJOR_PENT = [0, 2, 4, 7, 9];  // 1, 2, 3, 5, 6
+
+function mod(n, m){ return ((n % m) + m) % m; }
+function noteSemitoneAt(stringIdx, fret){ return mod(STRING_OPEN[stringIdx] + fret, 12); }
+function noteName(semitone){ return CHROMATIC[mod(semitone, 12)]; }
+
+// Verified A-minor-pentatonic 5-box template (every note hand-checked against
+// the A,C,D,E,G note set — see build notes). Frets are absolute, rooted at A.
+const A_MINOR_TEMPLATE = [
+  { start: 5,  end: 8,  perString: [[5,8],[5,8],[5,7],[5,7],[5,7],[5,8]] },
+  { start: 7,  end: 10, perString: [[8,10],[8,10],[7,9],[7,10],[7,10],[8,10]] },
+  { start: 10, end: 12, perString: [[10,12],[10,13],[9,12],[10,12],[10,12],[10,12]] },
+  { start: 12, end: 15, perString: [[12,15],[13,15],[12,14],[12,14],[12,15],[12,15]] },
+  { start: 14, end: 17, perString: [[15,17],[15,17],[14,17],[14,17],[15,17],[15,17]] },
+];
+
+// Shift the whole template by `shift` semitones (0-11) to land on any root.
+// If the shift pushes the box too high up the neck, drop the whole box an
+// octave (12 frets) so positions stay in a comfortable, consistent range.
+function buildShiftedTemplate(shift){
+  let boxes = A_MINOR_TEMPLATE.map(box => {
+    let newStart = box.start + shift;
+    let newEnd = box.end + shift;
+    let perString = box.perString.map(frets => frets.map(f => f + shift));
+    if(newStart > 14){
+      newStart -= 12; newEnd -= 12;
+      perString = perString.map(frets => frets.map(f => f - 12));
+    }
+    return { start: newStart, end: newEnd, perString };
+  });
+  // safety net: if any fret still negative, shift whole set up an octave
+  const hasNeg = boxes.some(b => b.perString.some(fr => fr.some(f => f < 0)));
+  if(hasNeg){
+    boxes = boxes.map(box => ({
+      start: box.start + 12,
+      end: box.end + 12,
+      perString: box.perString.map(frets => frets.map(f => f + 12))
+    }));
+  }
+  boxes.sort((a,b)=>a.start-b.start);
+  return boxes.map((b,i) => ({...b, index: i+1}));
+}
+
+function minorBoxesForRoot(root){
+  const shift = mod(CHROMATIC.indexOf(root) - CHROMATIC.indexOf("A"), 12);
+  return buildShiftedTemplate(shift);
+}
+
+// Major pentatonic shares shapes with its relative minor (root - 3 semitones).
+function majorBoxesForRoot(root){
+  const relMinorIdx = mod(CHROMATIC.indexOf(root) - 3, 12);
+  const relMinorRoot = CHROMATIC[relMinorIdx];
+  const shift = mod(CHROMATIC.indexOf(relMinorRoot) - CHROMATIC.indexOf("A"), 12);
+  return buildShiftedTemplate(shift);
+}
+
+// ---- UI State ----
+let state = {
+  root: "A",
+  scale: "minor",
+  position: 1
+};
+
+const rootRow = document.getElementById('rootRow');
+CHROMATIC.forEach(note => {
+  const btn = document.createElement('button');
+  btn.className = 'pill active minor';
+  btn.textContent = note;
+  btn.dataset.root = note;
+  btn.onclick = () => { state.root = note; render(); };
+  rootRow.appendChild(btn);
+});
+
+document.getElementById('scaleToggle').addEventListener('click', (e) => {
+  const btn = e.target.closest('button');
+  if(!btn) return;
+  state.scale = btn.dataset.scale;
+  render();
+});
+
+const positionRow = document.getElementById('positionRow');
+[1,2,3,4,5].forEach(p => {
+  const btn = document.createElement('button');
+  btn.className = 'pill';
+  btn.textContent = 'Posisi ' + p;
+  btn.dataset.pos = p;
+  btn.onclick = () => { state.position = p; render(); };
+  positionRow.appendChild(btn);
+});
+
+function refreshActiveStates(){
+  document.querySelectorAll('#rootRow .pill').forEach(btn => {
+    const active = btn.dataset.root === state.root;
+    btn.classList.toggle('active', active);
+    btn.classList.toggle('minor', state.scale === 'minor');
+    btn.classList.toggle('major', state.scale === 'major');
+  });
+  document.querySelectorAll('#scaleToggle button').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.scale === state.scale);
+  });
+  document.querySelectorAll('#positionRow .pill').forEach(btn => {
+    const active = Number(btn.dataset.pos) === state.position;
+    btn.classList.toggle('active', active);
+    btn.classList.toggle('minor', state.scale === 'minor');
+    btn.classList.toggle('major', state.scale === 'major');
+  });
+  document.getElementById('legendRootDot').style.background =
+    state.scale === 'minor' ? 'var(--root-min)' : 'var(--root-maj)';
+}
+
+function render(){
+  refreshActiveStates();
+
+  const rootSemitone = CHROMATIC.indexOf(state.root);
+  const boxes = state.scale === 'minor' ? minorBoxesForRoot(state.root) : majorBoxesForRoot(state.root);
+  const box = boxes[state.position - 1] || boxes[0];
+
+  const scaleLabel = state.scale === 'minor' ? 'Minor Pentatonic' : 'Major Pentatonic';
+  document.getElementById('shapeTitle').innerHTML =
+    `${state.root} ${scaleLabel} — <span class="accent ${state.scale === 'major' ? 'major' : ''}">Posisi ${box.index}</span>`;
+  document.getElementById('fretRange').textContent = `Fret ${box.start}–${box.end}`;
+
+  const svg = document.getElementById('board');
+  svg.innerHTML = '';
+
+  const padLeft = 66;
+  const padRight = 28;
+  const padTop = 26;
+  const padBottom = 30;
+  const width = 600;
+  const stringGap = 36;
+  const boardHeight = stringGap * 5;
+
+  // determine actual fret range to display, including any notes that spill
+  // one fret beyond box.start/box.end (e.g. the 13 in a 10-12 box)
+  let minF = box.start, maxF = box.end;
+  box.perString.forEach(frets => frets.forEach(f => {
+    if(f < minF) minF = f;
+    if(f > maxF) maxF = f;
+  }));
+  const displayStart = minF - 0.5;
+  const displayEnd = maxF + 0.5;
+  const fretSpan = displayEnd - displayStart;
+  const boardWidth = width - padLeft - padRight;
+  const fretGap = boardWidth / fretSpan;
+
+  svg.setAttribute('viewBox', `0 0 ${width} ${padTop + boardHeight + padBottom}`);
+
+  function fretX(fret){ return padLeft + (fret - displayStart) * fretGap; }
+  function stringY(idx){ return padTop + idx * stringGap; }
+
+  // fret lines
+  for(let f = minF; f <= maxF + 1; f++){
+    const x = fretX(f);
+    const isNut = f === 0;
+    const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1', x);
+    line.setAttribute('x2', x);
+    line.setAttribute('y1', padTop);
+    line.setAttribute('y2', padTop + boardHeight);
+    line.setAttribute('stroke', isNut ? '#efe7d6' : '#8a7c68');
+    line.setAttribute('stroke-width', isNut ? 5 : 2);
+    svg.appendChild(line);
+
+    if(f <= maxF){
+      const num = document.createElementNS('http://www.w3.org/2000/svg','text');
+      num.setAttribute('x', x + fretGap/2);
+      num.setAttribute('y', padTop + boardHeight + 18);
+      num.setAttribute('class', 'fret-num');
+      num.textContent = f;
+      svg.appendChild(num);
+    }
+  }
+
+  // strings
+  for(let i = 0; i < 6; i++){
+    const y = stringY(i);
+    const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1', padLeft);
+    line.setAttribute('x2', width - padRight);
+    line.setAttribute('y1', y);
+    line.setAttribute('y2', y);
+    line.setAttribute('stroke', '#d8cdb8');
+    line.setAttribute('stroke-width', i >= 4 ? 3 : (i===0?1.5:2));
+    svg.appendChild(line);
+
+    const label = document.createElementNS('http://www.w3.org/2000/svg','text');
+    label.setAttribute('x', padLeft - 14);
+    label.setAttribute('y', y + 4);
+    label.setAttribute('class', 'string-label');
+    label.textContent = STRING_NAMES[i];
+    svg.appendChild(label);
+  }
+
+  // notes
+  const rootColor = state.scale === 'minor' ? '#e8743b' : '#4a9d8f';
+  for(let s = 0; s < 6; s++){
+    box.perString[s].forEach(fret => {
+      const sem = noteSemitoneAt(s, fret);
+      const isRoot = sem === rootSemitone;
+      const x = fretX(fret) + fretGap/2;
+      const y = stringY(s);
+
+      const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      circle.setAttribute('cx', x);
+      circle.setAttribute('cy', y);
+      circle.setAttribute('r', 12);
+      circle.setAttribute('fill', isRoot ? rootColor : '#e0d6c2');
+      circle.setAttribute('class', 'note-circle');
+      svg.appendChild(circle);
+
+      const text = document.createElementNS('http://www.w3.org/2000/svg','text');
+      text.setAttribute('x', x);
+      text.setAttribute('y', y + 1);
+      text.setAttribute('class', 'note-text');
+      text.textContent = noteName(sem);
+      svg.appendChild(text);
+    });
+  }
+
+  // note strip
+  const scaleNotes = (state.scale === 'minor' ? MINOR_PENT : MAJOR_PENT).map(iv => noteName(rootSemitone + iv));
+  const strip = document.getElementById('noteStrip');
+  strip.innerHTML = '';
+  scaleNotes.forEach(n => {
+    const chip = document.createElement('span');
+    chip.className = 'note-chip' + (n === state.root ? ` root ${state.scale}` : '');
+    chip.textContent = n;
+    strip.appendChild(chip);
+  });
+}
+
+render();
+</script>
+</body>
+</html>

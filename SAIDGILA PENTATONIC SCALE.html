@@ -1,13 +1,10 @@
 <!DOCTYPE html>
-<html lang="ms">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎸</text></svg>">
-<meta property="og:title" content="Said Gila Pentatonic">
-<meta property="og:description" content="Peneroka skala pentatonik gitar — pilih root, minor/major, posisi 1–5">
-<meta name="description" content="Skala pentatonik interaktif untuk gitar. Oleh Said Gila.">
 <title>Said Gila Pentatonic</title>
+<meta name="description" content="Interactive pentatonic scale explorer for guitar. Choose root note, minor/major, and position 1–5.">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@400;600;700;800&display=swap');
 
@@ -241,7 +238,7 @@
   <header>
     <p class="eyebrow">Pentatonic Explorer</p>
     <h1>Said Gila Pentatonic</h1>
-    <p class="sub">Pilih root note, jenis scale (minor/major), dan posisi 1–5. Diagram fretboard auto-kemaskini.</p>
+    <p class="sub">Choose root note, scale type (minor/major), and position 1–5. Fretboard diagram updates automatically.</p>
   </header>
 
   <div class="controls">
@@ -251,7 +248,7 @@
     </div>
 
     <div class="control-row">
-      <span class="control-label">Jenis Scale</span>
+      <span class="control-label">Scale Type</span>
       <div class="scale-toggle" id="scaleToggle">
         <button class="minor active" data-scale="minor">Minor Pentatonic</button>
         <button class="major" data-scale="major">Major Pentatonic</button>
@@ -259,7 +256,7 @@
     </div>
 
     <div class="control-row">
-      <span class="control-label">Posisi (Box)</span>
+      <span class="control-label">Position (Box)</span>
       <div class="position-row" id="positionRow"></div>
     </div>
   </div>
@@ -274,31 +271,28 @@
     </div>
     <div class="legend">
       <span class="legend-item"><span class="dot" id="legendRootDot"></span> Root</span>
-      <span class="legend-item"><span class="dot" style="background:var(--note)"></span> Nota scale</span>
+      <span class="legend-item"><span class="dot" style="background:var(--note)"></span> Scale note</span>
     </div>
     <div class="note-strip" id="noteStrip"></div>
   </div>
 
   <footer>
-    Posisi 1–5 bersambung sepanjang fretboard ikut sistem CAGED. By Said Gila
+    Positions 1–5 connect along the fretboard following the CAGED system. By Said Gila
   </footer>
 </div>
 
 <script>
 const CHROMATIC = ["A","A#","B","C","C#","D","D#","E","F","F#","G","G#"];
-// semitone index (A=0) of each open string, top row = high E down to low E
 const STRING_OPEN = [7, 2, 10, 5, 0, 7];
 const STRING_NAMES = ["E","B","G","D","A","E"];
 
-const MINOR_PENT = [0, 3, 5, 7, 10]; // 1, b3, 4, 5, b7
-const MAJOR_PENT = [0, 2, 4, 7, 9];  // 1, 2, 3, 5, 6
+const MINOR_PENT = [0, 3, 5, 7, 10];
+const MAJOR_PENT = [0, 2, 4, 7, 9];
 
 function mod(n, m){ return ((n % m) + m) % m; }
 function noteSemitoneAt(stringIdx, fret){ return mod(STRING_OPEN[stringIdx] + fret, 12); }
 function noteName(semitone){ return CHROMATIC[mod(semitone, 12)]; }
 
-// Verified A-minor-pentatonic 5-box template (every note hand-checked against
-// the A,C,D,E,G note set — see build notes). Frets are absolute, rooted at A.
 const A_MINOR_TEMPLATE = [
   { start: 5,  end: 8,  perString: [[5,8],[5,8],[5,7],[5,7],[5,7],[5,8]] },
   { start: 7,  end: 10, perString: [[8,10],[8,10],[7,9],[7,10],[7,10],[8,10]] },
@@ -307,9 +301,6 @@ const A_MINOR_TEMPLATE = [
   { start: 14, end: 17, perString: [[15,17],[15,17],[14,17],[14,17],[15,17],[15,17]] },
 ];
 
-// Shift the whole template by `shift` semitones (0-11) to land on any root.
-// If the shift pushes the box too high up the neck, drop the whole box an
-// octave (12 frets) so positions stay in a comfortable, consistent range.
 function buildShiftedTemplate(shift){
   let boxes = A_MINOR_TEMPLATE.map(box => {
     let newStart = box.start + shift;
@@ -321,7 +312,6 @@ function buildShiftedTemplate(shift){
     }
     return { start: newStart, end: newEnd, perString };
   });
-  // safety net: if any fret still negative, shift whole set up an octave
   const hasNeg = boxes.some(b => b.perString.some(fr => fr.some(f => f < 0)));
   if(hasNeg){
     boxes = boxes.map(box => ({
@@ -339,7 +329,6 @@ function minorBoxesForRoot(root){
   return buildShiftedTemplate(shift);
 }
 
-// Major pentatonic shares shapes with its relative minor (root - 3 semitones).
 function majorBoxesForRoot(root){
   const relMinorIdx = mod(CHROMATIC.indexOf(root) - 3, 12);
   const relMinorRoot = CHROMATIC[relMinorIdx];
@@ -375,7 +364,7 @@ const positionRow = document.getElementById('positionRow');
 [1,2,3,4,5].forEach(p => {
   const btn = document.createElement('button');
   btn.className = 'pill';
-  btn.textContent = 'Posisi ' + p;
+  btn.textContent = 'Position ' + p;
   btn.dataset.pos = p;
   btn.onclick = () => { state.position = p; render(); };
   positionRow.appendChild(btn);
@@ -410,7 +399,7 @@ function render(){
 
   const scaleLabel = state.scale === 'minor' ? 'Minor Pentatonic' : 'Major Pentatonic';
   document.getElementById('shapeTitle').innerHTML =
-    `${state.root} ${scaleLabel} — <span class="accent ${state.scale === 'major' ? 'major' : ''}">Posisi ${box.index}</span>`;
+    `${state.root} ${scaleLabel} — <span class="accent ${state.scale === 'major' ? 'major' : ''}">Position ${box.index}</span>`;
   document.getElementById('fretRange').textContent = `Fret ${box.start}–${box.end}`;
 
   const svg = document.getElementById('board');
@@ -424,8 +413,6 @@ function render(){
   const stringGap = 36;
   const boardHeight = stringGap * 5;
 
-  // determine actual fret range to display, including any notes that spill
-  // one fret beyond box.start/box.end (e.g. the 13 in a 10-12 box)
   let minF = box.start, maxF = box.end;
   box.perString.forEach(frets => frets.forEach(f => {
     if(f < minF) minF = f;
@@ -442,7 +429,6 @@ function render(){
   function fretX(fret){ return padLeft + (fret - displayStart) * fretGap; }
   function stringY(idx){ return padTop + idx * stringGap; }
 
-  // fret lines
   for(let f = minF; f <= maxF + 1; f++){
     const x = fretX(f);
     const isNut = f === 0;
@@ -465,7 +451,6 @@ function render(){
     }
   }
 
-  // strings
   for(let i = 0; i < 6; i++){
     const y = stringY(i);
     const line = document.createElementNS('http://www.w3.org/2000/svg','line');
@@ -485,7 +470,6 @@ function render(){
     svg.appendChild(label);
   }
 
-  // notes
   const rootColor = state.scale === 'minor' ? '#e8743b' : '#4a9d8f';
   for(let s = 0; s < 6; s++){
     box.perString[s].forEach(fret => {
@@ -511,7 +495,6 @@ function render(){
     });
   }
 
-  // note strip
   const scaleNotes = (state.scale === 'minor' ? MINOR_PENT : MAJOR_PENT).map(iv => noteName(rootSemitone + iv));
   const strip = document.getElementById('noteStrip');
   strip.innerHTML = '';

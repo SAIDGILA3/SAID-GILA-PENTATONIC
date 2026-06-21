@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Said Gila Pentatonic</title>
-<meta name="description" content="Interactive pentatonic scale explorer for guitar. Choose root note, minor/major, and position 1–5.">
+<title>Said Gila Pentatonic + Circle of Fifths</title>
+<meta name="description" content="Interactive pentatonic scale explorer with Circle of Fifths. Choose root note, minor/major, and position 1–5.">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@400;600;700;800&display=swap');
 
@@ -20,6 +20,7 @@
     --paper: #efe7d6;
     --ink: #161312;
     --accent: #c9a14a;
+    --circle-bg: rgba(0,0,0,0.35);
   }
 
   *{ box-sizing: border-box; }
@@ -33,7 +34,7 @@
     min-height: 100vh;
   }
 
-  .wrap{ max-width: 920px; margin: 0 auto; }
+  .wrap{ max-width: 1100px; margin: 0 auto; }
 
   header{ margin-bottom: 22px; }
 
@@ -136,6 +137,45 @@
   .position-row{ display:flex; gap:7px; }
   .position-row .pill{ flex: 1; text-align:center; }
 
+  /* ---- Main layout: two panels side by side ---- */
+  .main-grid{
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+
+  .fretboard-panel{
+    flex: 2;
+    min-width: 320px;
+  }
+
+  .circle-panel{
+    flex: 1;
+    min-width: 260px;
+    background: linear-gradient(180deg, var(--wood-light), var(--wood));
+    border-radius: 16px;
+    padding: 20px 14px 14px;
+    border: 1px solid #4a3a2c;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .circle-title{
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 10px;
+    text-align: center;
+  }
+
+  .circle-svg-container{
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
   .panel{
     background: linear-gradient(180deg, var(--wood-light), var(--wood));
     border-radius: 16px;
@@ -172,7 +212,7 @@
 
   .board-scroll{ overflow-x: auto; padding-bottom: 6px; }
 
-  svg{ display:block; min-width: 540px; }
+  svg.fretboard-svg{ display:block; min-width: 540px; }
 
   .note-circle{ stroke: rgba(0,0,0,0.4); stroke-width: 1.5; }
   .note-text{
@@ -225,11 +265,50 @@
   .note-chip.root.major{ background: var(--root-maj); color: var(--ink); font-weight:700; }
 
   footer{
-    margin-top: 20px;
+    margin-top: 40px;
     font-size: 12.5px;
     color: #897c68;
     line-height: 1.6;
     text-align: center;
+  }
+
+  /* Circle specific */
+  .circle-note-text{
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    fill: #cdbfa0;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+  }
+  .circle-root-text{
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    fill: var(--ink);
+    text-anchor: middle;
+    dominant-baseline: central;
+    font-weight: 700;
+    pointer-events: none;
+  }
+  .circle-relation-ring{
+    fill: none;
+    stroke: var(--accent);
+    stroke-dasharray: 4 4;
+    stroke-width: 2;
+    pointer-events: none;
+  }
+  .circle-click-area{
+    fill: transparent;
+    cursor: pointer;
+    transition: fill 0.1s;
+  }
+  .circle-click-area:hover{
+    fill: rgba(255,255,255,0.07);
+  }
+
+  @media (max-width: 700px) {
+    .main-grid{ flex-direction: column; }
+    .circle-panel{ max-width: 100%; }
   }
 </style>
 </head>
@@ -238,7 +317,7 @@
   <header>
     <p class="eyebrow">Pentatonic Explorer</p>
     <h1>Said Gila Pentatonic</h1>
-    <p class="sub">Choose root note, scale type (minor/major), and position 1–5. Fretboard diagram updates automatically.</p>
+    <p class="sub">Choose root note, scale type, and position. The Circle of Fifths shows the key center and relative relationships.</p>
   </header>
 
   <div class="controls">
@@ -261,23 +340,38 @@
     </div>
   </div>
 
-  <div class="panel">
-    <div class="panel-head">
-      <h2 class="shape-title" id="shapeTitle"></h2>
-      <span class="fret-range" id="fretRange"></span>
+  <div class="main-grid">
+    <!-- Fretboard Panel (left) -->
+    <div class="fretboard-panel panel">
+      <div class="panel-head">
+        <h2 class="shape-title" id="shapeTitle"></h2>
+        <span class="fret-range" id="fretRange"></span>
+      </div>
+      <div class="board-scroll">
+        <svg id="board" class="fretboard-svg" viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+      <div class="legend">
+        <span class="legend-item"><span class="dot" id="legendRootDot"></span> Root</span>
+        <span class="legend-item"><span class="dot" style="background:var(--note)"></span> Scale note</span>
+      </div>
+      <div class="note-strip" id="noteStrip"></div>
     </div>
-    <div class="board-scroll">
-      <svg id="board" viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg"></svg>
+
+    <!-- Circle of Fifths Panel (right) -->
+    <div class="circle-panel">
+      <h3 class="circle-title">Circle of Fifths</h3>
+      <div class="circle-svg-container">
+        <svg id="circleSvg" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+      <div class="legend" style="margin-top: 10px; justify-content: center;">
+        <span class="legend-item"><span class="dot" id="circleLegendRoot"></span> Root</span>
+        <span class="legend-item"><span class="dot" style="background:var(--accent); opacity:0.7;"></span> Relative</span>
+      </div>
     </div>
-    <div class="legend">
-      <span class="legend-item"><span class="dot" id="legendRootDot"></span> Root</span>
-      <span class="legend-item"><span class="dot" style="background:var(--note)"></span> Scale note</span>
-    </div>
-    <div class="note-strip" id="noteStrip"></div>
   </div>
 
   <footer>
-    Positions 1–5 connect along the fretboard following the CAGED system. By Said Gila
+    Circle of Fifths — click any note to change the root and instantly see its relative major/minor. By Said Gila
   </footer>
 </div>
 
@@ -388,6 +482,146 @@ function refreshActiveStates(){
   });
   document.getElementById('legendRootDot').style.background =
     state.scale === 'minor' ? 'var(--root-min)' : 'var(--root-maj)';
+  document.getElementById('circleLegendRoot').style.background =
+    state.scale === 'minor' ? 'var(--root-min)' : 'var(--root-maj)';
+}
+
+function drawCircleOfFifths(rootSemitone, scaleType){
+  const svg = document.getElementById('circleSvg');
+  svg.innerHTML = '';
+  const cx = 120, cy = 120;
+  // Increase radius to 101 to move notes outward ~1.5mm
+  const radius = 101;
+  const circleNotes = [
+    { note: "C", semitone: 3 },
+    { note: "G", semitone: 10 },
+    { note: "D", semitone: 5 },
+    { note: "A", semitone: 0 },
+    { note: "E", semitone: 7 },
+    { note: "B", semitone: 2 },
+    { note: "F#", semitone: 9 },
+    { note: "C#", semitone: 4 },
+    { note: "G#", semitone: 11 },
+    { note: "D#", semitone: 6 },
+    { note: "A#", semitone: 1 },
+    { note: "F", semitone: 8 }
+  ];
+
+  // Background circle (slightly smaller to stay inside the notes)
+  const bg = document.createElementNS('http://www.w3.org/2000/svg','circle');
+  bg.setAttribute('cx', cx);
+  bg.setAttribute('cy', cy);
+  bg.setAttribute('r', 95); // original circle size, notes will now sit outside
+  bg.setAttribute('fill', 'none');
+  bg.setAttribute('stroke', '#4a4036');
+  bg.setAttribute('stroke-width', '2');
+  svg.appendChild(bg);
+
+  // Connecting lines between fifths
+  for(let i=0; i<circleNotes.length; i++){
+    const current = circleNotes[i];
+    const next = circleNotes[(i+1)%circleNotes.length];
+    const angle1 = (i * (360/12) - 90) * (Math.PI/180);
+    const angle2 = ((i+1) * (360/12) - 90) * (Math.PI/180);
+    const x1 = cx + radius * Math.cos(angle1);
+    const y1 = cy + radius * Math.sin(angle1);
+    const x2 = cx + radius * Math.cos(angle2);
+    const y2 = cy + radius * Math.sin(angle2);
+    const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1', x1);
+    line.setAttribute('y1', y1);
+    line.setAttribute('x2', x2);
+    line.setAttribute('y2', y2);
+    line.setAttribute('stroke', '#4a4036');
+    line.setAttribute('stroke-width', '1.5');
+    line.setAttribute('stroke-dasharray', '2 3');
+    svg.appendChild(line);
+  }
+
+  const relativeSemitone = scaleType === 'minor' 
+    ? mod(rootSemitone + 3, 12)
+    : mod(rootSemitone - 3, 12);
+
+  circleNotes.forEach((item, index) => {
+    const angle = (index * (360/12) - 90) * (Math.PI/180);
+    const x = cx + radius * Math.cos(angle);
+    const y = cy + radius * Math.sin(angle);
+
+    // Clickable area (invisible)
+    const clickArea = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    clickArea.setAttribute('cx', x);
+    clickArea.setAttribute('cy', y);
+    clickArea.setAttribute('r', 19);
+    clickArea.setAttribute('class', 'circle-click-area');
+    clickArea.addEventListener('click', () => {
+      state.root = item.note;
+      render();
+    });
+    svg.appendChild(clickArea);
+
+    // Root highlight
+    if(item.semitone === rootSemitone){
+      const rootCircle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      rootCircle.setAttribute('cx', x);
+      rootCircle.setAttribute('cy', y);
+      rootCircle.setAttribute('r', 16);
+      rootCircle.setAttribute('fill', scaleType === 'minor' ? 'var(--root-min)' : 'var(--root-maj)');
+      rootCircle.setAttribute('stroke', '#000');
+      rootCircle.setAttribute('stroke-width', '1.5');
+      rootCircle.style.pointerEvents = 'none';
+      svg.appendChild(rootCircle);
+
+      const label = document.createElementNS('http://www.w3.org/2000/svg','text');
+      label.setAttribute('x', x);
+      label.setAttribute('y', y);
+      label.setAttribute('class', 'circle-root-text');
+      label.textContent = item.note;
+      label.style.pointerEvents = 'none';
+      svg.appendChild(label);
+    } else {
+      // Normal note circle
+      const noteCircle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      noteCircle.setAttribute('cx', x);
+      noteCircle.setAttribute('cy', y);
+      noteCircle.setAttribute('r', 14);
+      noteCircle.setAttribute('fill', '#3d2f24');
+      noteCircle.setAttribute('stroke', '#5a4d3c');
+      noteCircle.setAttribute('stroke-width', '1');
+      noteCircle.style.pointerEvents = 'none';
+      svg.appendChild(noteCircle);
+
+      const label = document.createElementNS('http://www.w3.org/2000/svg','text');
+      label.setAttribute('x', x);
+      label.setAttribute('y', y);
+      label.setAttribute('class', 'circle-note-text');
+      label.textContent = item.note;
+      label.style.pointerEvents = 'none';
+      svg.appendChild(label);
+    }
+
+    // Relative note highlight (ring)
+    if(item.semitone === relativeSemitone && relativeSemitone !== rootSemitone){
+      const relRing = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      relRing.setAttribute('cx', x);
+      relRing.setAttribute('cy', y);
+      relRing.setAttribute('r', 16.5);
+      relRing.setAttribute('class', 'circle-relation-ring');
+      svg.appendChild(relRing);
+    }
+  });
+
+  // Center label
+  const centerText = document.createElementNS('http://www.w3.org/2000/svg','text');
+  centerText.setAttribute('x', cx);
+  centerText.setAttribute('y', cy);
+  centerText.setAttribute('text-anchor', 'middle');
+  centerText.setAttribute('dominant-baseline', 'central');
+  centerText.setAttribute('fill', '#cdbfa0');
+  centerText.style.fontFamily = 'Space Mono, monospace';
+  centerText.style.fontSize = '14px';
+  centerText.style.fontWeight = '700';
+  centerText.textContent = `${noteName(rootSemitone)} ${scaleType === 'minor' ? 'm' : 'M'}`;
+  svg.appendChild(centerText);
 }
 
 function render(){
@@ -504,6 +738,9 @@ function render(){
     chip.textContent = n;
     strip.appendChild(chip);
   });
+
+  // Draw Circle of Fifths
+  drawCircleOfFifths(rootSemitone, state.scale);
 }
 
 render();

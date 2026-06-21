@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Said Gila Pentatonic Scale Master</title>
-  <meta name="description" content="Master pentatonic scales with interactive fretboard visualization, practice modes, and theory lessons.">
+  <meta name="description" content="Master pentatonic scales with interactive fretboard visualization, practice modes, theory lessons, and the Circle of Fifths.">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23c9a14a' width='100' height='100'/%3E%3Ctext x='50' y='60' font-size='60' font-weight='bold' text-anchor='middle' fill='%23161312'%3EG%3C/text%3E%3C/svg%3E">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
@@ -41,7 +41,6 @@
       overflow-x: hidden;
     }
 
-    /* Navigation */
     nav {
       position: sticky;
       top: 0;
@@ -89,7 +88,6 @@
       color: var(--primary);
     }
 
-    /* Hero */
     .hero {
       max-width: 1200px;
       margin: 0 auto;
@@ -153,14 +151,12 @@
       color: var(--dark-bg);
     }
 
-    /* Container */
     .container {
       max-width: 1200px;
       margin: 0 auto;
       padding: 0 20px;
     }
 
-    /* Sections */
     section {
       padding: 80px 0;
       border-bottom: 1px solid var(--border);
@@ -174,7 +170,6 @@
       letter-spacing: -0.02em;
     }
 
-    /* Controls */
     .controls-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -237,7 +232,6 @@
       border-color: var(--accent-teal);
     }
 
-    /* Fretboard Panel */
     .fretboard-panel {
       background: linear-gradient(135deg, var(--dark-card), var(--dark-surface));
       border: 1px solid var(--border);
@@ -275,7 +269,7 @@
       -webkit-overflow-scrolling: touch;
     }
 
-    svg {
+    svg.fretboard-svg {
       display: block;
       min-width: 100%;
     }
@@ -309,7 +303,6 @@
       font-weight: 600;
     }
 
-    /* Legend */
     .legend {
       display: flex;
       gap: 24px;
@@ -332,7 +325,6 @@
       flex-shrink: 0;
     }
 
-    /* Notes */
     .notes-display {
       display: flex;
       gap: 12px;
@@ -366,7 +358,6 @@
       background: var(--accent-teal);
     }
 
-    /* Features Grid */
     .features-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -403,7 +394,6 @@
       line-height: 1.7;
     }
 
-    /* Theory Section */
     .theory-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -442,7 +432,6 @@
       overflow-x: auto;
     }
 
-    /* Footer */
     footer {
       background: var(--dark-surface);
       border-top: 1px solid var(--border);
@@ -481,7 +470,34 @@
       color: var(--accent-orange);
     }
 
-    /* Responsive */
+    /* Circle of Fifths specific */
+    .circle-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .circle-svg {
+      width: 100%;
+      max-width: 500px;
+      height: auto;
+    }
+
+    .circle-key {
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .circle-key:hover {
+      opacity: 0.8;
+    }
+
+    .circle-active {
+      stroke: var(--primary);
+      stroke-width: 3;
+    }
+
     @media (max-width: 768px) {
       .nav-links {
         gap: 16px;
@@ -504,7 +520,6 @@
       }
     }
 
-    /* Animations */
     @keyframes fadeInUp {
       from {
         opacity: 0;
@@ -522,12 +537,12 @@
   </style>
 </head>
 <body>
-  <!-- Navigation -->
   <nav>
     <div class="nav-content">
       <a href="#" class="logo">🎸 SAID GILA</a>
       <ul class="nav-links">
         <li><a href="#explorer">Explorer</a></li>
+        <li><a href="#circle">Circle of Fifths</a></li>
         <li><a href="#features">Features</a></li>
         <li><a href="#theory">Theory</a></li>
         <li><a href="#contact">Contact</a></li>
@@ -538,19 +553,18 @@
   <!-- Hero -->
   <section class="hero">
     <h1>Master Pentatonic Scales</h1>
-    <p class="subtitle">Interactive fretboard explorer with visual learning tools, practice modes, and comprehensive music theory guides for guitarists of all levels.</p>
+    <p class="subtitle">Interactive fretboard explorer, Circle of Fifths reference, and comprehensive music theory guides for guitarists of all levels.</p>
     <div class="cta-group">
       <a href="#explorer" class="btn btn-primary">Start Exploring</a>
-      <a href="#theory" class="btn btn-secondary">Learn Theory</a>
+      <a href="#circle" class="btn btn-secondary">Open Circle of Fifths</a>
     </div>
   </section>
 
-  <!-- Explorer -->
+  <!-- Explorer (same as before) -->
   <section id="explorer">
     <div class="container">
       <h2>Pentatonic Explorer</h2>
 
-      <!-- Controls -->
       <div class="controls-grid">
         <div class="control-group">
           <label class="control-label">Root Note</label>
@@ -568,14 +582,13 @@
         </div>
       </div>
 
-      <!-- Fretboard -->
       <div class="fretboard-panel">
         <div class="fretboard-header">
           <h3 class="fretboard-title" id="shapeTitle"></h3>
           <span class="fret-indicator" id="fretRange"></span>
         </div>
         <div class="fretboard-scroll">
-          <svg id="board" viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg"></svg>
+          <svg id="board" class="fretboard-svg" viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg"></svg>
         </div>
         <div class="legend">
           <span class="legend-item">
@@ -592,7 +605,50 @@
     </div>
   </section>
 
-  <!-- Features -->
+  <!-- Circle of Fifths (NEW) -->
+  <section id="circle">
+    <div class="container">
+      <h2>Circle of Fifths</h2>
+      <div class="fretboard-panel">
+        <div class="fretboard-header">
+          <h3 class="fretboard-title">Interactive Key Reference</h3>
+          <span class="fret-indicator" id="circle-active-info">Select a key</span>
+        </div>
+        <div class="circle-container">
+          <svg id="circleSvg" class="circle-svg" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg"></svg>
+        </div>
+        <div class="legend" style="margin-top: 16px; justify-content: center;">
+          <span class="legend-item"><span class="dot" style="background: var(--accent-orange);"></span> Active Major</span>
+          <span class="legend-item"><span class="dot" style="background: var(--accent-teal);"></span> Active Minor</span>
+          <span class="legend-item"><span class="dot" style="background: var(--primary); border: 1px solid var(--text-secondary);"></span> Relative pair</span>
+        </div>
+        <p style="text-align: center; color: var(--text-secondary); font-size: 13px; margin-top: 16px;">
+          Click any major key to explore its <strong>Major Pentatonic</strong> scale, or click a minor key to explore its <strong>Minor Pentatonic</strong>.
+          The fretboard and controls update instantly.
+        </p>
+      </div>
+
+      <div class="theory-grid" style="margin-top: 40px;">
+        <div class="theory-card">
+          <h3>How the Circle Works</h3>
+          <p>The Circle of Fifths organises the 12 keys by perfect fifth intervals. Moving clockwise adds sharps (or removes flats), moving counter‑clockwise adds flats. Each major key is paired with its relative minor (three semitones lower).</p>
+          <code>C (0 sharps) → G (1 sharp) → D (2 sharps) …</code>
+        </div>
+        <div class="theory-card">
+          <h3>Pentatonic Connection</h3>
+          <p>Major pentatonic = notes 1, 2, 3, 5, 6 of the major scale. Minor pentatonic = notes 1, 3, 4, 5, 7 of the natural minor scale. The same set of notes works for both a major key and its relative minor. For example, <strong>C major pentatonic</strong> and <strong>A minor pentatonic</strong> share identical notes.</p>
+          <code>C maj pent = A min pent (C, D, E, G, A)</code>
+        </div>
+        <div class="theory-card">
+          <h3>Practical Use</h3>
+          <p>Use the circle to quickly transpose licks, find relative keys, and understand key signatures. The active highlight shows you exactly which pentatonic scale you're viewing on the fretboard, making it easy to connect theory with the guitar neck.</p>
+          <code>Click G → Explorer loads G major pentatonic</code>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features (unchanged) -->
   <section id="features">
     <div class="container">
       <h2>Why Choose This Tool</h2>
@@ -601,6 +657,11 @@
           <div class="feature-icon">🎯</div>
           <h3>Visual Learning</h3>
           <p>See exactly where pentatonic scales live on your fretboard with color-coded positions and clear note identification.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔁</div>
+          <h3>Circle of Fifths</h3>
+          <p>Visualise key relationships, relative minors, and instantly switch scales by clicking on the interactive circle.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">📊</div>
@@ -618,20 +679,15 @@
           <p>Practice in any key from A to G# with automatic fretboard calculations and visual adjustments.</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">📱</div>
-          <h3>Mobile Friendly</h3>
-          <p>Practice anywhere with a fully responsive interface designed for phones, tablets, and desktops.</p>
-        </div>
-        <div class="feature-card">
           <div class="feature-icon">⚡</div>
           <h3>Instant Updates</h3>
-          <p>Real-time fretboard visualization updates as you change scales, keys, and positions.</p>
+          <p>Real-time fretboard visualization updates as you change scales, keys, and positions – including from the circle.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Theory -->
+  <!-- Theory (unchanged) -->
   <section id="theory">
     <div class="container">
       <h2>Pentatonic Theory</h2>
@@ -675,7 +731,7 @@
     <div class="container" style="text-align: center; max-width: 600px;">
       <h2>Get Started Today</h2>
       <p style="font-size: 16px; color: var(--text-secondary); margin-bottom: 32px;">
-        Begin your pentatonic journey. Explore scales, understand theory, and develop your fretboard mastery with our interactive tools.
+        Begin your pentatonic journey. Explore scales, use the Circle of Fifths, understand theory, and develop your fretboard mastery.
       </p>
       <a href="#explorer" class="btn btn-primary">Open Explorer</a>
     </div>
@@ -688,6 +744,7 @@
       <div class="footer-links">
         <a href="https://github.com/SAIDGILA3">GitHub</a>
         <a href="#explorer">Explorer</a>
+        <a href="#circle">Circle of Fifths</a>
         <a href="#theory">Theory</a>
       </div>
       <p>© 2026 Said Gila. All rights reserved. | Pentatonic Scale Master</p>
@@ -695,17 +752,19 @@
   </footer>
 
   <script>
+    // ---------- Constants & Helpers ----------
     const CHROMATIC = ["A","A#","B","C","C#","D","D#","E","F","F#","G","G#"];
-    const STRING_OPEN = [7, 2, 10, 5, 0, 7];
+    const STRING_OPEN = [7, 2, 10, 5, 0, 7]; // semitones from A (E=7, B=2, G=10, D=5, A=0, E=7)
     const STRING_NAMES = ["E","B","G","D","A","E"];
 
-    const MINOR_PENT = [0, 3, 5, 7, 10];
+    const MINOR_PENT = [0, 3, 5, 7, 10];   // intervals in semitones
     const MAJOR_PENT = [0, 2, 4, 7, 9];
 
     function mod(n, m){ return ((n % m) + m) % m; }
     function noteSemitoneAt(stringIdx, fret){ return mod(STRING_OPEN[stringIdx] + fret, 12); }
     function noteName(semitone){ return CHROMATIC[mod(semitone, 12)]; }
 
+    // A minor pentatonic box templates (open position base)
     const A_MINOR_TEMPLATE = [
       { start: 5,  end: 8,  perString: [[5,8],[5,8],[5,7],[5,7],[5,7],[5,8]] },
       { start: 7,  end: 10, perString: [[8,10],[8,10],[7,9],[7,10],[7,10],[8,10]] },
@@ -749,86 +808,223 @@
       return buildShiftedTemplate(shift);
     }
 
+    // ---------- Global State ----------
     let state = {
       root: "A",
       scale: "minor",
       position: 1
     };
 
+    // ---------- UI Element References ----------
     const rootRow = document.getElementById('rootRow');
+    const scaleRow = document.getElementById('scaleRow');
+    const positionRow = document.getElementById('positionRow');
+    const shapeTitle = document.getElementById('shapeTitle');
+    const fretRange = document.getElementById('fretRange');
+    const board = document.getElementById('board');
+    const legendRootDot = document.getElementById('legendRootDot');
+    const noteStrip = document.getElementById('noteStrip');
+    const circleActiveInfo = document.getElementById('circle-active-info');
+    const circleSvg = document.getElementById('circleSvg');
+
+    // ---------- Build Static Controls ----------
     CHROMATIC.forEach(note => {
       const btn = document.createElement('button');
       btn.className = 'pill';
       btn.textContent = note;
       btn.dataset.root = note;
-      if(note === state.root) btn.classList.add('active');
       btn.onclick = () => { state.root = note; render(); };
       rootRow.appendChild(btn);
     });
 
-    const scaleRow = document.getElementById('scaleRow');
     ['minor', 'major'].forEach(s => {
       const btn = document.createElement('button');
       btn.className = 'pill';
       btn.textContent = s === 'minor' ? 'Minor Pentatonic' : 'Major Pentatonic';
       btn.dataset.scale = s;
-      if(s === state.scale) btn.classList.add('active');
       btn.onclick = () => { state.scale = s; render(); };
       scaleRow.appendChild(btn);
     });
 
-    const positionRow = document.getElementById('positionRow');
     [1,2,3,4,5].forEach(p => {
       const btn = document.createElement('button');
       btn.className = 'pill';
       btn.textContent = 'Pos ' + p;
       btn.dataset.pos = p;
-      if(p === state.position) btn.classList.add('active');
       btn.onclick = () => { state.position = p; render(); };
       positionRow.appendChild(btn);
     });
 
+    // ---------- Active State Refresh ----------
     function refreshActiveStates(){
+      // Root pills
       document.querySelectorAll('#rootRow .pill').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.root === state.root);
       });
+      // Scale pills
       document.querySelectorAll('#scaleRow .pill').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.scale === state.scale);
       });
+      // Position pills
       document.querySelectorAll('#positionRow .pill').forEach(btn => {
         btn.classList.toggle('active', Number(btn.dataset.pos) === state.position);
       });
 
+      // Accent colors for root/position pills
       const accentClass = state.scale === 'minor' ? 'accent-orange' : 'accent-teal';
       document.querySelectorAll('#rootRow .pill.active, #positionRow .pill.active').forEach(btn => {
         btn.classList.remove('accent-orange', 'accent-teal');
         btn.classList.add(accentClass);
       });
 
+      // Legend dot color
       const dotColor = state.scale === 'minor' ? 'var(--accent-orange)' : 'var(--accent-teal)';
-      document.getElementById('legendRootDot').style.background = dotColor;
+      legendRootDot.style.background = dotColor;
     }
 
+    // ---------- Circle of Fifths Drawing ----------
+    function drawCircleOfFifths() {
+      const svg = circleSvg;
+      svg.innerHTML = '';
+
+      const centerX = 250, centerY = 250, outerR = 200, innerR = 150, textR = 175;
+      const majorKeys = ["C", "G", "D", "A", "E", "B", "F#", "C#", "Ab", "Eb", "Bb", "F"];
+      // Relative minors (3 semitones down from each major)
+      const minorKeys = majorKeys.map(m => {
+        const idx = CHROMATIC.indexOf(m);
+        return CHROMATIC[mod(idx - 3, 12)];
+      });
+
+      // Determine active major/minor based on state
+      let activeMajor = null, activeMinor = null;
+      if (state.scale === 'major') {
+        activeMajor = state.root;
+        // The relative minor of this major
+        activeMinor = CHROMATIC[mod(CHROMATIC.indexOf(state.root) - 3, 12)];
+      } else {
+        activeMinor = state.root;
+        // The relative major of this minor
+        activeMajor = CHROMATIC[mod(CHROMATIC.indexOf(state.root) + 3, 12)];
+      }
+
+      // Draw connecting lines (perfect fifth arcs)
+      for (let i = 0; i < 12; i++) {
+        const angle1 = (i * 30 - 90) * Math.PI / 180;
+        const angle2 = ((i + 1) * 30 - 90) * Math.PI / 180;
+        const x1 = centerX + outerR * Math.cos(angle1);
+        const y1 = centerY + outerR * Math.sin(angle1);
+        const x2 = centerX + outerR * Math.cos(angle2);
+        const y2 = centerY + outerR * Math.sin(angle2);
+
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+        line.setAttribute('x2', x2); line.setAttribute('y2', y2);
+        line.setAttribute('stroke', '#444');
+        line.setAttribute('stroke-width', '1.5');
+        svg.appendChild(line);
+      }
+
+      // Draw keys
+      for (let i = 0; i < 12; i++) {
+        const angle = (i * 30 - 90) * Math.PI / 180;
+        const xOuter = centerX + outerR * Math.cos(angle);
+        const yOuter = centerY + outerR * Math.sin(angle);
+        const xInner = centerX + innerR * Math.cos(angle);
+        const yInner = centerY + innerR * Math.sin(angle);
+
+        // Major key (outer)
+        const majorGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        majorGroup.setAttribute('class', 'circle-key');
+        majorGroup.setAttribute('data-key', majorKeys[i]);
+        majorGroup.setAttribute('data-scale', 'major');
+        majorGroup.addEventListener('click', () => circleClick(majorKeys[i], 'major'));
+
+        const circleMajor = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circleMajor.setAttribute('cx', xOuter);
+        circleMajor.setAttribute('cy', yOuter);
+        circleMajor.setAttribute('r', '18');
+        circleMajor.setAttribute('fill', majorKeys[i] === activeMajor ? 'var(--accent-orange)' : '#333');
+        circleMajor.setAttribute('stroke', majorKeys[i] === activeMajor ? 'var(--primary)' : '#555');
+        circleMajor.setAttribute('stroke-width', majorKeys[i] === activeMajor ? '3' : '1.5');
+        majorGroup.appendChild(circleMajor);
+
+        const textMajor = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        textMajor.setAttribute('x', xOuter);
+        textMajor.setAttribute('y', yOuter + 4);
+        textMajor.setAttribute('text-anchor', 'middle');
+        textMajor.setAttribute('fill', '#fff');
+        textMajor.setAttribute('font-family', 'JetBrains Mono, monospace');
+        textMajor.setAttribute('font-weight', '700');
+        textMajor.setAttribute('font-size', '12');
+        textMajor.textContent = majorKeys[i];
+        majorGroup.appendChild(textMajor);
+
+        svg.appendChild(majorGroup);
+
+        // Minor key (inner)
+        const minorGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        minorGroup.setAttribute('class', 'circle-key');
+        minorGroup.setAttribute('data-key', minorKeys[i]);
+        minorGroup.setAttribute('data-scale', 'minor');
+        minorGroup.addEventListener('click', () => circleClick(minorKeys[i], 'minor'));
+
+        const circleMinor = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circleMinor.setAttribute('cx', xInner);
+        circleMinor.setAttribute('cy', yInner);
+        circleMinor.setAttribute('r', '15');
+        circleMinor.setAttribute('fill', minorKeys[i] === activeMinor ? 'var(--accent-teal)' : '#2a2a2a');
+        circleMinor.setAttribute('stroke', minorKeys[i] === activeMinor ? 'var(--primary)' : '#555');
+        circleMinor.setAttribute('stroke-width', minorKeys[i] === activeMinor ? '3' : '1.5');
+        minorGroup.appendChild(circleMinor);
+
+        const textMinor = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        textMinor.setAttribute('x', xInner);
+        textMinor.setAttribute('y', yInner + 4);
+        textMinor.setAttribute('text-anchor', 'middle');
+        textMinor.setAttribute('fill', '#ddd');
+        textMinor.setAttribute('font-family', 'JetBrains Mono, monospace');
+        textMinor.setAttribute('font-weight', '600');
+        textMinor.setAttribute('font-size', '10');
+        textMinor.textContent = minorKeys[i] + 'm';
+        minorGroup.appendChild(textMinor);
+
+        svg.appendChild(minorGroup);
+      }
+
+      // Update active info text
+      if (state.scale === 'major') {
+        circleActiveInfo.textContent = `Active: ${activeMajor} Major (relative: ${activeMinor}m)`;
+      } else {
+        circleActiveInfo.textContent = `Active: ${activeMinor}m Minor (relative: ${activeMajor})`;
+      }
+    }
+
+    // Circle click handler: update state and re-render everything
+    function circleClick(root, scale) {
+      state.root = root;
+      state.scale = scale;
+      state.position = 1;   // reset to first position for clarity
+      render();
+    }
+
+    // ---------- Fretboard Rendering ----------
     function render(){
       refreshActiveStates();
+      drawCircleOfFifths();   // keep circle in sync
 
       const rootSemitone = CHROMATIC.indexOf(state.root);
       const boxes = state.scale === 'minor' ? minorBoxesForRoot(state.root) : majorBoxesForRoot(state.root);
       const box = boxes[state.position - 1] || boxes[0];
 
       const scaleLabel = state.scale === 'minor' ? 'Minor' : 'Major';
-      const accentSpan = `<span style="color: ${state.scale === 'minor' ? 'var(--accent-orange)' : 'var(--accent-teal)'}">${state.root} ${scaleLabel} — Position ${box.index}</span>`;
-      document.getElementById('shapeTitle').innerHTML = accentSpan;
-      document.getElementById('fretRange').textContent = `Frets ${box.start}–${box.end}`;
+      const accentColor = state.scale === 'minor' ? 'var(--accent-orange)' : 'var(--accent-teal)';
+      shapeTitle.innerHTML = `<span style="color: ${accentColor}">${state.root} ${scaleLabel} — Position ${box.index}</span>`;
+      fretRange.textContent = `Frets ${box.start}–${box.end}`;
 
-      const svg = document.getElementById('board');
-      svg.innerHTML = '';
+      // Clear and rebuild SVG
+      board.innerHTML = '';
 
-      const padLeft = 80;
-      const padRight = 40;
-      const padTop = 30;
-      const padBottom = 40;
-      const width = 700;
+      const padLeft = 80, padRight = 40, padTop = 30, padBottom = 40, width = 700;
       const stringGap = 42;
       const boardHeight = stringGap * 5;
 
@@ -843,11 +1039,12 @@
       const boardWidth = width - padLeft - padRight;
       const fretGap = boardWidth / fretSpan;
 
-      svg.setAttribute('viewBox', `0 0 ${width} ${padTop + boardHeight + padBottom}`);
+      board.setAttribute('viewBox', `0 0 ${width} ${padTop + boardHeight + padBottom}`);
 
       function fretX(fret){ return padLeft + (fret - displayStart) * fretGap; }
       function stringY(idx){ return padTop + idx * stringGap; }
 
+      // Fret lines and numbers
       for(let f = minF; f <= maxF + 1; f++){
         const x = fretX(f);
         const isNut = f === 0;
@@ -858,7 +1055,7 @@
         line.setAttribute('y2', padTop + boardHeight);
         line.setAttribute('stroke', isNut ? '#c9a14a' : '#444444');
         line.setAttribute('stroke-width', isNut ? 6 : 2);
-        svg.appendChild(line);
+        board.appendChild(line);
 
         if(f <= maxF){
           const num = document.createElementNS('http://www.w3.org/2000/svg','text');
@@ -866,10 +1063,11 @@
           num.setAttribute('y', padTop + boardHeight + 22);
           num.setAttribute('class', 'fret-num');
           num.textContent = f;
-          svg.appendChild(num);
+          board.appendChild(num);
         }
       }
 
+      // Strings and labels
       for(let i = 0; i < 6; i++){
         const y = stringY(i);
         const line = document.createElementNS('http://www.w3.org/2000/svg','line');
@@ -879,16 +1077,17 @@
         line.setAttribute('y2', y);
         line.setAttribute('stroke', '#e0e0e0');
         line.setAttribute('stroke-width', i >= 4 ? 3.5 : (i===0?1.8:2.5));
-        svg.appendChild(line);
+        board.appendChild(line);
 
         const label = document.createElementNS('http://www.w3.org/2000/svg','text');
         label.setAttribute('x', padLeft - 16);
         label.setAttribute('y', y + 5);
         label.setAttribute('class', 'string-label');
         label.textContent = STRING_NAMES[i];
-        svg.appendChild(label);
+        board.appendChild(label);
       }
 
+      // Note circles
       const rootColor = state.scale === 'minor' ? '#e8743b' : '#4a9d8f';
       for(let s = 0; s < 6; s++){
         box.perString[s].forEach(fret => {
@@ -903,20 +1102,20 @@
           circle.setAttribute('r', 13);
           circle.setAttribute('fill', isRoot ? rootColor : 'rgba(255, 255, 255, 0.85)');
           circle.setAttribute('class', 'note-circle');
-          svg.appendChild(circle);
+          board.appendChild(circle);
 
           const text = document.createElementNS('http://www.w3.org/2000/svg','text');
           text.setAttribute('x', x);
           text.setAttribute('y', y + 1);
           text.setAttribute('class', 'note-text');
           text.textContent = noteName(sem);
-          svg.appendChild(text);
+          board.appendChild(text);
         });
       }
 
+      // Note strip
       const scaleNotes = (state.scale === 'minor' ? MINOR_PENT : MAJOR_PENT).map(iv => noteName(rootSemitone + iv));
-      const strip = document.getElementById('noteStrip');
-      strip.innerHTML = '';
+      noteStrip.innerHTML = '';
       scaleNotes.forEach(n => {
         const chip = document.createElement('span');
         const classes = ['note-badge'];
@@ -926,10 +1125,11 @@
         }
         chip.className = classes.join(' ');
         chip.textContent = n;
-        strip.appendChild(chip);
+        noteStrip.appendChild(chip);
       });
     }
 
+    // Initial render
     render();
   </script>
 </body>

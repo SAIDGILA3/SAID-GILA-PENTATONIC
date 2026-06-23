@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Said Gila Pentatonic Scale Master</title>
-  <meta name="description" content="Master pentatonic scales with interactive fretboard visualization, practice modes, theory lessons, and the Circle of Fifths.">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23c9a14a' width='100' height='100'/%3E%3Ctext x='50' y='60' font-size='60' font-weight='bold' text-anchor='middle' fill='%23161312'%3EG%3C/text%3E%3C/svg%3E">
+  <title>SAIDGILACHORDVAULT PRO</title>
+  <meta name="description" content="SAIDGILACHORDVAULT PRO: Master pentatonic scales with interactive fretboard, Circle of Fifths, Chromatic Tuner, and comprehensive music theory.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23c9a14a' width='100' height='100'/%3E%3Ctext x='50' y='60' font-size='60' font-weight='bold' text-anchor='middle' fill='%23161312'%3EC%3C/text%3E%3C/svg%3E">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
 
@@ -13,6 +13,7 @@
       --primary: #c9a14a;
       --accent-orange: #e8743b;
       --accent-teal: #4a9d8f;
+      --tuner-green: #10b981;
       --dark-bg: #0a0a0a;
       --dark-surface: #1a1a1a;
       --dark-card: #252525;
@@ -23,15 +24,8 @@
       --warning: #f59e0b;
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
     body {
       font-family: 'Inter', sans-serif;
@@ -42,507 +36,160 @@
     }
 
     nav {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
+      position: sticky; top: 0; z-index: 1000;
       background: rgba(10, 10, 10, 0.95);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border);
       padding: 16px 0;
     }
-
     .nav-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      max-width: 1200px; margin: 0 auto; padding: 0 20px;
+      display: flex; justify-content: space-between; align-items: center;
     }
-
     .logo {
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--primary);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      font-size: 22px; font-weight: 800; color: var(--primary);
+      text-decoration: none; display: flex; align-items: center; gap: 8px;
     }
-
-    .nav-links {
-      display: flex;
-      gap: 32px;
-      list-style: none;
-    }
-
+    .nav-links { display: flex; gap: 32px; list-style: none; }
     .nav-links a {
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-      transition: color 0.3s;
+      color: var(--text-secondary); text-decoration: none;
+      font-size: 14px; font-weight: 500; transition: color 0.3s;
     }
-
-    .nav-links a:hover {
-      color: var(--primary);
-    }
+    .nav-links a:hover { color: var(--primary); }
 
     .hero {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 80px 20px;
-      text-align: center;
+      max-width: 1200px; margin: 0 auto; padding: 80px 20px; text-align: center;
     }
-
-    .hero h1 {
-      font-size: clamp(32px, 8vw, 64px);
-      font-weight: 800;
-      margin-bottom: 16px;
-      letter-spacing: -0.02em;
-    }
-
-    .hero .subtitle {
-      font-size: 18px;
-      color: var(--text-secondary);
-      max-width: 600px;
-      margin: 0 auto 32px;
-      line-height: 1.8;
-    }
-
-    .cta-group {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
+    .hero h1 { font-size: clamp(32px, 8vw, 64px); font-weight: 800; margin-bottom: 16px; letter-spacing: -0.02em; }
+    .hero .subtitle { font-size: 18px; color: var(--text-secondary); max-width: 700px; margin: 0 auto 32px; line-height: 1.8; }
+    .cta-group { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
 
     .btn {
-      display: inline-block;
-      padding: 12px 32px;
-      border-radius: 8px;
-      font-weight: 600;
-      text-decoration: none;
-      cursor: pointer;
-      border: none;
-      font-size: 14px;
-      transition: all 0.3s;
-      font-family: 'Inter', sans-serif;
+      display: inline-block; padding: 12px 32px; border-radius: 8px;
+      font-weight: 600; text-decoration: none; cursor: pointer; border: none;
+      font-size: 14px; transition: all 0.3s; font-family: 'Inter', sans-serif;
     }
+    .btn-primary { background: var(--primary); color: var(--dark-bg); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(201, 161, 74, 0.2); }
+    .btn-secondary { background: var(--dark-card); color: var(--primary); border: 1px solid var(--primary); }
+    .btn-secondary:hover { background: var(--primary); color: var(--dark-bg); }
 
-    .btn-primary {
-      background: var(--primary);
-      color: var(--dark-bg);
-    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 24px rgba(201, 161, 74, 0.2);
-    }
+    section { padding: 80px 0; border-bottom: 1px solid var(--border); }
+    section h2 { font-size: clamp(28px, 6vw, 48px); font-weight: 800; margin-bottom: 48px; text-align: center; letter-spacing: -0.02em; }
 
-    .btn-secondary {
-      background: var(--dark-card);
-      color: var(--primary);
-      border: 1px solid var(--primary);
-    }
-
-    .btn-secondary:hover {
-      background: var(--primary);
-      color: var(--dark-bg);
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-
-    section {
-      padding: 80px 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    section h2 {
-      font-size: clamp(28px, 6vw, 48px);
-      font-weight: 800;
-      margin-bottom: 48px;
-      text-align: center;
-      letter-spacing: -0.02em;
-    }
-
-    .controls-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 24px;
-      margin-bottom: 48px;
-    }
-
-    .control-group {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .control-label {
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--primary);
-    }
-
-    .pill-group {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
+    .controls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin-bottom: 48px; }
+    .control-group { display: flex; flex-direction: column; gap: 12px; }
+    .control-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--primary); }
+    .pill-group { display: flex; gap: 8px; flex-wrap: wrap; }
     .pill {
-      padding: 10px 16px;
-      border-radius: 20px;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--text-secondary);
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
+      padding: 10px 16px; border-radius: 20px; border: 1px solid var(--border);
+      background: transparent; color: var(--text-secondary); font-size: 13px;
+      font-weight: 500; cursor: pointer; transition: all 0.2s;
       font-family: 'JetBrains Mono', monospace;
     }
+    .pill:hover { border-color: var(--primary); color: var(--primary); }
+    .pill.active { background: var(--primary); color: var(--dark-bg); border-color: var(--primary); font-weight: 600; }
+    .pill.active.accent-orange { background: var(--accent-orange); border-color: var(--accent-orange); }
+    .pill.active.accent-teal { background: var(--accent-teal); border-color: var(--accent-teal); }
 
-    .pill:hover {
-      border-color: var(--primary);
-      color: var(--primary);
-    }
-
-    .pill.active {
-      background: var(--primary);
-      color: var(--dark-bg);
-      border-color: var(--primary);
-      font-weight: 600;
-    }
-
-    .pill.active.accent-orange {
-      background: var(--accent-orange);
-      border-color: var(--accent-orange);
-    }
-
-    .pill.active.accent-teal {
-      background: var(--accent-teal);
-      border-color: var(--accent-teal);
-    }
-
-    .fretboard-panel {
+    .fretboard-panel, .tuner-panel {
       background: linear-gradient(135deg, var(--dark-card), var(--dark-surface));
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 32px;
-      margin-bottom: 32px;
+      border: 1px solid var(--border); border-radius: 12px; padding: 32px; margin-bottom: 32px;
     }
-
-    .fretboard-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-      flex-wrap: wrap;
-      gap: 16px;
+    .fretboard-header, .tuner-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 24px; flex-wrap: wrap; gap: 16px;
     }
-
-    .fretboard-title {
-      font-size: 24px;
-      font-weight: 700;
-    }
-
+    .fretboard-title, .tuner-title { font-size: 24px; font-weight: 700; }
     .fret-indicator {
-      background: var(--dark-surface);
-      padding: 8px 16px;
-      border-radius: 6px;
-      font-size: 13px;
-      font-family: 'JetBrains Mono', monospace;
-      border: 1px solid var(--border);
+      background: var(--dark-surface); padding: 8px 16px; border-radius: 6px;
+      font-size: 13px; font-family: 'JetBrains Mono', monospace; border: 1px solid var(--border);
     }
 
-    .fretboard-scroll {
-      overflow-x: auto;
-      padding-bottom: 16px;
-      -webkit-overflow-scrolling: touch;
-    }
+    .fretboard-scroll { overflow-x: auto; padding-bottom: 16px; -webkit-overflow-scrolling: touch; }
+    svg.fretboard-svg { display: block; min-width: 100%; }
 
-    svg.fretboard-svg {
-      display: block;
-      min-width: 100%;
-    }
+    .note-circle { stroke: rgba(255, 255, 255, 0.15); stroke-width: 1.5; }
+    .note-text { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 11px; fill: var(--dark-bg); text-anchor: middle; dominant-baseline: central; }
+    .fret-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: var(--text-secondary); text-anchor: middle; }
+    .string-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; fill: var(--text-secondary); text-anchor: end; font-weight: 600; }
 
-    .note-circle {
-      stroke: rgba(255, 255, 255, 0.15);
-      stroke-width: 1.5;
-    }
+    .legend { display: flex; gap: 24px; margin-top: 24px; flex-wrap: wrap; }
+    .legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-secondary); }
+    .dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
 
-    .note-text {
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 700;
-      font-size: 11px;
-      fill: var(--dark-bg);
-      text-anchor: middle;
-      dominant-baseline: central;
-    }
-
-    .fret-num {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      fill: var(--text-secondary);
-      text-anchor: middle;
-    }
-
-    .string-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      fill: var(--text-secondary);
-      text-anchor: end;
-      font-weight: 600;
-    }
-
-    .legend {
-      display: flex;
-      gap: 24px;
-      margin-top: 24px;
-      flex-wrap: wrap;
-    }
-
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      color: var(--text-secondary);
-    }
-
-    .dot {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .notes-display {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 24px;
-    }
-
+    .notes-display { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
     .note-badge {
-      padding: 8px 14px;
-      background: var(--dark-surface);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      transition: all 0.2s;
+      padding: 8px 14px; background: var(--dark-surface); border: 1px solid var(--border);
+      border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 13px;
+      font-weight: 600; color: var(--text-secondary); transition: all 0.2s;
     }
+    .note-badge.root { background: var(--primary); color: var(--dark-bg); border-color: var(--primary); }
+    .note-badge.root.accent-orange { background: var(--accent-orange); }
+    .note-badge.root.accent-teal { background: var(--accent-teal); }
 
-    .note-badge.root {
-      background: var(--primary);
-      color: var(--dark-bg);
-      border-color: var(--primary);
+    .features-grid, .theory-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+    .feature-card, .theory-card {
+      background: var(--dark-card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 24px; transition: all 0.3s;
     }
-
-    .note-badge.root.accent-orange {
-      background: var(--accent-orange);
-    }
-
-    .note-badge.root.accent-teal {
-      background: var(--accent-teal);
-    }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
-    }
-
-    .feature-card {
-      background: linear-gradient(135deg, var(--dark-card), var(--dark-surface));
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 32px;
-      transition: all 0.3s;
-    }
-
-    .feature-card:hover {
-      border-color: var(--primary);
-      transform: translateY(-4px);
-    }
-
-    .feature-icon {
-      font-size: 32px;
-      margin-bottom: 16px;
-    }
-
-    .feature-card h3 {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
-
-    .feature-card p {
-      font-size: 14px;
-      color: var(--text-secondary);
-      line-height: 1.7;
-    }
-
-    .theory-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px;
-    }
-
-    .theory-card {
-      background: var(--dark-card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 24px;
-    }
-
-    .theory-card h3 {
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 12px;
-      color: var(--primary);
-    }
-
-    .theory-card p {
-      font-size: 13px;
-      color: var(--text-secondary);
-      line-height: 1.8;
-    }
-
+    .feature-card:hover { border-color: var(--primary); transform: translateY(-4px); }
+    .feature-icon { font-size: 32px; margin-bottom: 16px; }
+    .feature-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+    .feature-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+    .theory-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 12px; color: var(--primary); }
+    .theory-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.8; }
     .theory-card code {
-      display: block;
-      background: var(--dark-surface);
-      padding: 12px;
-      border-radius: 6px;
-      margin-top: 12px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      color: var(--primary);
-      overflow-x: auto;
+      display: block; background: var(--dark-surface); padding: 12px; border-radius: 6px;
+      margin-top: 12px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--primary); overflow-x: auto;
     }
+
+    /* Tuner specific */
+    .tuner-container { display: flex; flex-direction: column; align-items: center; gap: 24px; }
+    .tuner-canvas { width: 260px; height: 260px; }
+    .note-display {
+      font-family: 'JetBrains Mono', monospace; font-size: 48px; font-weight: 800;
+      text-align: center; color: var(--text-primary); margin-bottom: 8px;
+    }
+    .cents-display { font-size: 18px; font-family: 'JetBrains Mono', monospace; color: var(--text-secondary); }
+    .tuner-controls { display: flex; gap: 16px; margin-top: 8px; }
 
     footer {
-      background: var(--dark-surface);
-      border-top: 1px solid var(--border);
-      padding: 48px 20px;
-      text-align: center;
+      background: var(--dark-surface); border-top: 1px solid var(--border);
+      padding: 48px 20px; text-align: center;
     }
-
-    .footer-content {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    footer p {
-      color: var(--text-secondary);
-      font-size: 13px;
-      margin-bottom: 16px;
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 24px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-bottom: 24px;
-    }
-
-    .footer-links a {
-      color: var(--primary);
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 600;
-      transition: color 0.3s;
-    }
-
-    .footer-links a:hover {
-      color: var(--accent-orange);
-    }
-
-    /* Circle of Fifths specific */
-    .circle-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
-
-    .circle-svg {
-      width: 100%;
-      max-width: 500px;
-      height: auto;
-    }
-
-    .circle-key {
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .circle-key:hover {
-      opacity: 0.8;
-    }
-
-    .circle-active {
-      stroke: var(--primary);
-      stroke-width: 3;
-    }
+    .footer-content { max-width: 1200px; margin: 0 auto; }
+    footer p { color: var(--text-secondary); font-size: 13px; margin-bottom: 16px; }
+    .footer-links { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
+    .footer-links a { color: var(--primary); text-decoration: none; font-size: 13px; font-weight: 600; transition: color 0.3s; }
+    .footer-links a:hover { color: var(--accent-orange); }
 
     @media (max-width: 768px) {
-      .nav-links {
-        gap: 16px;
-      }
-
-      .hero {
-        padding: 60px 20px;
-      }
-
-      section {
-        padding: 60px 0;
-      }
-
-      .fretboard-panel {
-        padding: 20px;
-      }
-
-      .controls-grid {
-        grid-template-columns: 1fr;
-      }
+      .nav-links { gap: 16px; }
+      .hero { padding: 60px 20px; }
+      section { padding: 60px 0; }
+      .fretboard-panel, .tuner-panel { padding: 20px; }
+      .controls-grid { grid-template-columns: 1fr; }
     }
 
     @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-
-    section {
-      animation: fadeInUp 0.6s ease-out;
-    }
+    section { animation: fadeInUp 0.6s ease-out; }
   </style>
 </head>
 <body>
+  <!-- Navigation -->
   <nav>
     <div class="nav-content">
-      <a href="#" class="logo">🎸 SAID GILA</a>
+      <a href="#" class="logo">🎸 SAIDGILACHORDVAULT PRO</a>
       <ul class="nav-links">
         <li><a href="#explorer">Explorer</a></li>
         <li><a href="#circle">Circle of Fifths</a></li>
+        <li><a href="#tuner">Tuner</a></li>
         <li><a href="#features">Features</a></li>
         <li><a href="#theory">Theory</a></li>
         <li><a href="#contact">Contact</a></li>
@@ -552,11 +199,11 @@
 
   <!-- Hero -->
   <section class="hero">
-    <h1>Master Pentatonic Scales</h1>
-    <p class="subtitle">Interactive fretboard explorer, Circle of Fifths reference, and comprehensive music theory guides for guitarists of all levels.</p>
+    <h1>SAIDGILACHORDVAULT PRO</h1>
+    <p class="subtitle">Master Pentatonic Scales — Interactive Fretboard Explorer, Circle of Fifths, Chromatic Tuner, and Comprehensive Music Theory for Guitarists of All Levels.</p>
     <div class="cta-group">
       <a href="#explorer" class="btn btn-primary">Start Exploring</a>
-      <a href="#circle" class="btn btn-secondary">Open Circle of Fifths</a>
+      <a href="#tuner" class="btn btn-secondary">Open Tuner</a>
     </div>
   </section>
 
@@ -564,24 +211,20 @@
   <section id="explorer">
     <div class="container">
       <h2>Pentatonic Explorer</h2>
-
       <div class="controls-grid">
         <div class="control-group">
           <label class="control-label">Root Note</label>
           <div class="pill-group" id="rootRow"></div>
         </div>
-
         <div class="control-group">
           <label class="control-label">Scale Type</label>
           <div class="pill-group" id="scaleRow"></div>
         </div>
-
         <div class="control-group">
           <label class="control-label">Position (Box)</label>
           <div class="pill-group" id="positionRow"></div>
         </div>
       </div>
-
       <div class="fretboard-panel">
         <div class="fretboard-header">
           <h3 class="fretboard-title" id="shapeTitle"></h3>
@@ -591,21 +234,15 @@
           <svg id="board" class="fretboard-svg" viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg"></svg>
         </div>
         <div class="legend">
-          <span class="legend-item">
-            <span class="dot" id="legendRootDot"></span>
-            Root Note
-          </span>
-          <span class="legend-item">
-            <span class="dot" style="background: var(--text-primary); opacity: 0.7;"></span>
-            Scale Note
-          </span>
+          <span class="legend-item"><span class="dot" id="legendRootDot"></span> Root Note</span>
+          <span class="legend-item"><span class="dot" style="background: var(--text-primary); opacity: 0.7;"></span> Scale Note</span>
         </div>
         <div class="notes-display" id="noteStrip"></div>
       </div>
     </div>
   </section>
 
-  <!-- Circle of Fifths (NEW) -->
+  <!-- Circle of Fifths (existing) -->
   <section id="circle">
     <div class="container">
       <h2>Circle of Fifths</h2>
@@ -627,7 +264,6 @@
           The fretboard and controls update instantly.
         </p>
       </div>
-
       <div class="theory-grid" style="margin-top: 40px;">
         <div class="theory-card">
           <h3>How the Circle Works</h3>
@@ -648,80 +284,75 @@
     </div>
   </section>
 
-  <!-- Features (unchanged) -->
-  <section id="features">
+  <!-- Chromatic Tuner (existing) -->
+  <section id="tuner">
     <div class="container">
-      <h2>Why Choose This Tool</h2>
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">🎯</div>
-          <h3>Visual Learning</h3>
-          <p>See exactly where pentatonic scales live on your fretboard with color-coded positions and clear note identification.</p>
+      <h2>Chromatic Tuner</h2>
+      <div class="tuner-panel">
+        <div class="tuner-header">
+          <h3 class="tuner-title">Real‑time Pitch Detection</h3>
+          <span class="fret-indicator" id="tuner-status">Stopped</span>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">🔁</div>
-          <h3>Circle of Fifths</h3>
-          <p>Visualise key relationships, relative minors, and instantly switch scales by clicking on the interactive circle.</p>
+        <div class="tuner-container">
+          <canvas id="tunerCanvas" class="tuner-canvas" width="260" height="260"></canvas>
+          <div class="note-display" id="tunerNote">--</div>
+          <div class="cents-display" id="tunerCents">0 ¢</div>
+          <div class="tuner-controls">
+            <button class="btn btn-primary" id="tunerStartBtn">Start Tuner</button>
+            <button class="btn btn-secondary" id="tunerStopBtn">Stop Tuner</button>
+          </div>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">📊</div>
-          <h3>All 5 Positions</h3>
-          <p>Master the CAGED system by exploring all five pentatonic box positions for deeper fretboard understanding.</p>
+        <p style="text-align: center; color: var(--text-secondary); font-size: 13px; margin-top: 24px;">
+          Allow microphone access when prompted. Play a single note and the tuner will show the closest chromatic pitch.
+          The gauge turns green when you’re within ±5 cents.
+        </p>
+      </div>
+      <div class="theory-grid" style="margin-top: 40px;">
+        <div class="theory-card">
+          <h3>Chromatic Scale</h3>
+          <p>The chromatic scale contains all 12 notes in Western music, each a semitone apart. The tuner detects the frequency of your note and matches it to the nearest chromatic pitch (A4 = 440 Hz).</p>
+          <code>A, A#, B, C, C#, D, D#, E, F, F#, G, G#</code>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">🔄</div>
-          <h3>Major & Minor</h3>
-          <p>Switch between major and minor pentatonic scales instantly to explore different moods and applications.</p>
+        <div class="theory-card">
+          <h3>How Pitch Detection Works</h3>
+          <p>The tuner uses autocorrelation to find the fundamental frequency of your instrument. It then calculates the difference in cents (100 cents = 1 semitone) and displays the nearest note name.</p>
+          <code>f0 = sampleRate / lag_max</code>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">🎼</div>
-          <h3>All Root Notes</h3>
-          <p>Practice in any key from A to G# with automatic fretboard calculations and visual adjustments.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">⚡</div>
-          <h3>Instant Updates</h3>
-          <p>Real-time fretboard visualization updates as you change scales, keys, and positions – including from the circle.</p>
+        <div class="theory-card">
+          <h3>Tuning Tips</h3>
+          <p>For guitar, tune each string to the standard EADGBE. Use the tuner to check intonation across the fretboard. Pluck the string clearly and let it sustain for best results.</p>
+          <code>E2 (82.4 Hz), A2 (110 Hz), D3 (146.8 Hz), G3 (196 Hz), B3 (246.9 Hz), E4 (329.6 Hz)</code>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Theory (unchanged) -->
+  <!-- Features (updated) -->
+  <section id="features">
+    <div class="container">
+      <h2>Why Choose This Tool</h2>
+      <div class="features-grid">
+        <div class="feature-card"><div class="feature-icon">🎯</div><h3>Visual Learning</h3><p>See exactly where pentatonic scales live on your fretboard with color-coded positions and clear note identification.</p></div>
+        <div class="feature-card"><div class="feature-icon">🔁</div><h3>Circle of Fifths</h3><p>Visualise key relationships, relative minors, and instantly switch scales by clicking on the interactive circle.</p></div>
+        <div class="feature-card"><div class="feature-icon">🎛️</div><h3>Chromatic Tuner</h3><p>Built-in tuner with high-precision pitch detection. Tune your instrument quickly with clear visual feedback.</p></div>
+        <div class="feature-card"><div class="feature-icon">📊</div><h3>All 5 Positions</h3><p>Master the CAGED system by exploring all five pentatonic box positions for deeper fretboard understanding.</p></div>
+        <div class="feature-card"><div class="feature-icon">🔄</div><h3>Major & Minor</h3><p>Switch between major and minor pentatonic scales instantly to explore different moods and applications.</p></div>
+        <div class="feature-card"><div class="feature-icon">⚡</div><h3>Instant Updates</h3><p>Real-time fretboard visualization updates as you change scales, keys, and positions – including from the circle.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Theory (existing) -->
   <section id="theory">
     <div class="container">
       <h2>Pentatonic Theory</h2>
       <div class="theory-grid">
-        <div class="theory-card">
-          <h3>Minor Pentatonic</h3>
-          <p>The most popular scale in blues, rock, and many other genres. Built from the natural minor scale with the 2nd and 6th degrees removed.</p>
-          <code>Root, m3, P4, P5, m7</code>
-        </div>
-        <div class="theory-card">
-          <h3>Major Pentatonic</h3>
-          <p>A bright, uplifting scale commonly used in pop, country, and funk. It's the relative major to the minor pentatonic.</p>
-          <code>Root, M2, M3, P5, M6</code>
-        </div>
-        <div class="theory-card">
-          <h3>CAGED System</h3>
-          <p>The five pentatonic positions correspond to the CAGED chord shapes (C, A, G, E, D). Memorizing these shapes unlocks the entire fretboard.</p>
-          <code>5 Interconnected Positions</code>
-        </div>
-        <div class="theory-card">
-          <h3>Relative Keys</h3>
-          <p>A minor pentatonic and C major pentatonic share the same notes. Understanding relative keys helps you navigate between modes.</p>
-          <code>Am pent = C maj pent</code>
-        </div>
-        <div class="theory-card">
-          <h3>Blues Applications</h3>
-          <p>Add the blue note (flat 5) to either pentatonic scale for classic blues sounds. Experiment with bending between notes.</p>
-          <code>Am + Eb = Blues sound</code>
-        </div>
-        <div class="theory-card">
-          <h3>Practice Tips</h3>
-          <p>Start with one position, then move through all five. Connect positions to develop fluency. Sing the scale to internalize the sound.</p>
-          <code>Consistency > Speed</code>
-        </div>
+        <div class="theory-card"><h3>Minor Pentatonic</h3><p>The most popular scale in blues, rock, and many other genres. Built from the natural minor scale with the 2nd and 6th degrees removed.</p><code>Root, m3, P4, P5, m7</code></div>
+        <div class="theory-card"><h3>Major Pentatonic</h3><p>A bright, uplifting scale commonly used in pop, country, and funk. It's the relative major to the minor pentatonic.</p><code>Root, M2, M3, P5, M6</code></div>
+        <div class="theory-card"><h3>CAGED System</h3><p>The five pentatonic positions correspond to the CAGED chord shapes (C, A, G, E, D). Memorizing these shapes unlocks the entire fretboard.</p><code>5 Interconnected Positions</code></div>
+        <div class="theory-card"><h3>Relative Keys</h3><p>A minor pentatonic and C major pentatonic share the same notes. Understanding relative keys helps you navigate between modes.</p><code>Am pent = C maj pent</code></div>
+        <div class="theory-card"><h3>Blues Applications</h3><p>Add the blue note (flat 5) to either pentatonic scale for classic blues sounds. Experiment with bending between notes.</p><code>Am + Eb = Blues sound</code></div>
+        <div class="theory-card"><h3>Practice Tips</h3><p>Start with one position, then move through all five. Connect positions to develop fluency. Sing the scale to internalize the sound.</p><code>Consistency > Speed</code></div>
       </div>
     </div>
   </section>
@@ -731,7 +362,7 @@
     <div class="container" style="text-align: center; max-width: 600px;">
       <h2>Get Started Today</h2>
       <p style="font-size: 16px; color: var(--text-secondary); margin-bottom: 32px;">
-        Begin your pentatonic journey. Explore scales, use the Circle of Fifths, understand theory, and develop your fretboard mastery.
+        Begin your pentatonic journey with SAIDGILACHORDVAULT PRO. Explore scales, use the Circle of Fifths, tune with the Chromatic Tuner, and develop your fretboard mastery.
       </p>
       <a href="#explorer" class="btn btn-primary">Open Explorer</a>
     </div>
@@ -745,26 +376,25 @@
         <a href="https://github.com/SAIDGILA3">GitHub</a>
         <a href="#explorer">Explorer</a>
         <a href="#circle">Circle of Fifths</a>
+        <a href="#tuner">Tuner</a>
         <a href="#theory">Theory</a>
       </div>
-      <p>© 2026 Said Gila. All rights reserved. | Pentatonic Scale Master</p>
+      <p>© 2026 SAIDGILACHORDVAULT PRO. All rights reserved.</p>
     </div>
   </footer>
 
   <script>
-    // ---------- Constants & Helpers ----------
+    // ==================== Constants & Helpers ====================
     const CHROMATIC = ["A","A#","B","C","C#","D","D#","E","F","F#","G","G#"];
-    const STRING_OPEN = [7, 2, 10, 5, 0, 7]; // semitones from A (E=7, B=2, G=10, D=5, A=0, E=7)
+    const STRING_OPEN = [7, 2, 10, 5, 0, 7];
     const STRING_NAMES = ["E","B","G","D","A","E"];
-
-    const MINOR_PENT = [0, 3, 5, 7, 10];   // intervals in semitones
+    const MINOR_PENT = [0, 3, 5, 7, 10];
     const MAJOR_PENT = [0, 2, 4, 7, 9];
 
     function mod(n, m){ return ((n % m) + m) % m; }
     function noteSemitoneAt(stringIdx, fret){ return mod(STRING_OPEN[stringIdx] + fret, 12); }
     function noteName(semitone){ return CHROMATIC[mod(semitone, 12)]; }
 
-    // A minor pentatonic box templates (open position base)
     const A_MINOR_TEMPLATE = [
       { start: 5,  end: 8,  perString: [[5,8],[5,8],[5,7],[5,7],[5,7],[5,8]] },
       { start: 7,  end: 10, perString: [[8,10],[8,10],[7,9],[7,10],[7,10],[8,10]] },
@@ -778,20 +408,11 @@
         let newStart = box.start + shift;
         let newEnd = box.end + shift;
         let perString = box.perString.map(frets => frets.map(f => f + shift));
-        if(newStart > 14){
-          newStart -= 12; newEnd -= 12;
-          perString = perString.map(frets => frets.map(f => f - 12));
-        }
+        if(newStart > 14){ newStart -= 12; newEnd -= 12; perString = perString.map(frets => frets.map(f => f - 12)); }
         return { start: newStart, end: newEnd, perString };
       });
       const hasNeg = boxes.some(b => b.perString.some(fr => fr.some(f => f < 0)));
-      if(hasNeg){
-        boxes = boxes.map(box => ({
-          start: box.start + 12,
-          end: box.end + 12,
-          perString: box.perString.map(frets => frets.map(f => f + 12))
-        }));
-      }
+      if(hasNeg){ boxes = boxes.map(box => ({ start: box.start + 12, end: box.end + 12, perString: box.perString.map(frets => frets.map(f => f + 12)) })); }
       boxes.sort((a,b)=>a.start-b.start);
       return boxes.map((b,i) => ({...b, index: i+1}));
     }
@@ -800,7 +421,6 @@
       const shift = mod(CHROMATIC.indexOf(root) - CHROMATIC.indexOf("A"), 12);
       return buildShiftedTemplate(shift);
     }
-
     function majorBoxesForRoot(root){
       const relMinorIdx = mod(CHROMATIC.indexOf(root) - 3, 12);
       const relMinorRoot = CHROMATIC[relMinorIdx];
@@ -808,14 +428,10 @@
       return buildShiftedTemplate(shift);
     }
 
-    // ---------- Global State ----------
-    let state = {
-      root: "A",
-      scale: "minor",
-      position: 1
-    };
+    // ==================== State ====================
+    let state = { root: "A", scale: "minor", position: 1 };
 
-    // ---------- UI Element References ----------
+    // ==================== UI Elements ====================
     const rootRow = document.getElementById('rootRow');
     const scaleRow = document.getElementById('scaleRow');
     const positionRow = document.getElementById('positionRow');
@@ -827,309 +443,322 @@
     const circleActiveInfo = document.getElementById('circle-active-info');
     const circleSvg = document.getElementById('circleSvg');
 
-    // ---------- Build Static Controls ----------
+    // Build controls
     CHROMATIC.forEach(note => {
       const btn = document.createElement('button');
-      btn.className = 'pill';
-      btn.textContent = note;
-      btn.dataset.root = note;
+      btn.className = 'pill'; btn.textContent = note; btn.dataset.root = note;
+      if(note === state.root) btn.classList.add('active');
       btn.onclick = () => { state.root = note; render(); };
       rootRow.appendChild(btn);
     });
-
     ['minor', 'major'].forEach(s => {
       const btn = document.createElement('button');
-      btn.className = 'pill';
-      btn.textContent = s === 'minor' ? 'Minor Pentatonic' : 'Major Pentatonic';
+      btn.className = 'pill'; btn.textContent = s === 'minor' ? 'Minor Pentatonic' : 'Major Pentatonic';
       btn.dataset.scale = s;
+      if(s === state.scale) btn.classList.add('active');
       btn.onclick = () => { state.scale = s; render(); };
       scaleRow.appendChild(btn);
     });
-
     [1,2,3,4,5].forEach(p => {
       const btn = document.createElement('button');
-      btn.className = 'pill';
-      btn.textContent = 'Pos ' + p;
-      btn.dataset.pos = p;
+      btn.className = 'pill'; btn.textContent = 'Pos ' + p; btn.dataset.pos = p;
+      if(p === state.position) btn.classList.add('active');
       btn.onclick = () => { state.position = p; render(); };
       positionRow.appendChild(btn);
     });
 
-    // ---------- Active State Refresh ----------
     function refreshActiveStates(){
-      // Root pills
-      document.querySelectorAll('#rootRow .pill').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.root === state.root);
-      });
-      // Scale pills
-      document.querySelectorAll('#scaleRow .pill').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.scale === state.scale);
-      });
-      // Position pills
-      document.querySelectorAll('#positionRow .pill').forEach(btn => {
-        btn.classList.toggle('active', Number(btn.dataset.pos) === state.position);
-      });
-
-      // Accent colors for root/position pills
+      document.querySelectorAll('#rootRow .pill').forEach(btn => btn.classList.toggle('active', btn.dataset.root === state.root));
+      document.querySelectorAll('#scaleRow .pill').forEach(btn => btn.classList.toggle('active', btn.dataset.scale === state.scale));
+      document.querySelectorAll('#positionRow .pill').forEach(btn => btn.classList.toggle('active', Number(btn.dataset.pos) === state.position));
       const accentClass = state.scale === 'minor' ? 'accent-orange' : 'accent-teal';
       document.querySelectorAll('#rootRow .pill.active, #positionRow .pill.active').forEach(btn => {
         btn.classList.remove('accent-orange', 'accent-teal');
         btn.classList.add(accentClass);
       });
-
-      // Legend dot color
-      const dotColor = state.scale === 'minor' ? 'var(--accent-orange)' : 'var(--accent-teal)';
-      legendRootDot.style.background = dotColor;
+      legendRootDot.style.background = state.scale === 'minor' ? 'var(--accent-orange)' : 'var(--accent-teal)';
     }
 
-    // ---------- Circle of Fifths Drawing ----------
     function drawCircleOfFifths() {
-      const svg = circleSvg;
-      svg.innerHTML = '';
-
-      const centerX = 250, centerY = 250, outerR = 200, innerR = 150, textR = 175;
+      const svg = circleSvg; svg.innerHTML = '';
+      const centerX = 250, centerY = 250, outerR = 200, innerR = 150;
       const majorKeys = ["C", "G", "D", "A", "E", "B", "F#", "C#", "Ab", "Eb", "Bb", "F"];
-      // Relative minors (3 semitones down from each major)
-      const minorKeys = majorKeys.map(m => {
-        const idx = CHROMATIC.indexOf(m);
-        return CHROMATIC[mod(idx - 3, 12)];
-      });
-
-      // Determine active major/minor based on state
+      const minorKeys = majorKeys.map(m => CHROMATIC[mod(CHROMATIC.indexOf(m) - 3, 12)]);
       let activeMajor = null, activeMinor = null;
       if (state.scale === 'major') {
         activeMajor = state.root;
-        // The relative minor of this major
         activeMinor = CHROMATIC[mod(CHROMATIC.indexOf(state.root) - 3, 12)];
       } else {
         activeMinor = state.root;
-        // The relative major of this minor
         activeMajor = CHROMATIC[mod(CHROMATIC.indexOf(state.root) + 3, 12)];
       }
-
-      // Draw connecting lines (perfect fifth arcs)
       for (let i = 0; i < 12; i++) {
         const angle1 = (i * 30 - 90) * Math.PI / 180;
         const angle2 = ((i + 1) * 30 - 90) * Math.PI / 180;
-        const x1 = centerX + outerR * Math.cos(angle1);
-        const y1 = centerY + outerR * Math.sin(angle1);
-        const x2 = centerX + outerR * Math.cos(angle2);
-        const y2 = centerY + outerR * Math.sin(angle2);
-
-        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-        line.setAttribute('x1', x1); line.setAttribute('y1', y1);
-        line.setAttribute('x2', x2); line.setAttribute('y2', y2);
-        line.setAttribute('stroke', '#444');
-        line.setAttribute('stroke-width', '1.5');
+        const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+        line.setAttribute('x1', centerX + outerR * Math.cos(angle1));
+        line.setAttribute('y1', centerY + outerR * Math.sin(angle1));
+        line.setAttribute('x2', centerX + outerR * Math.cos(angle2));
+        line.setAttribute('y2', centerY + outerR * Math.sin(angle2));
+        line.setAttribute('stroke','#444'); line.setAttribute('stroke-width','1.5');
         svg.appendChild(line);
       }
-
-      // Draw keys
       for (let i = 0; i < 12; i++) {
         const angle = (i * 30 - 90) * Math.PI / 180;
-        const xOuter = centerX + outerR * Math.cos(angle);
-        const yOuter = centerY + outerR * Math.sin(angle);
-        const xInner = centerX + innerR * Math.cos(angle);
-        const yInner = centerY + innerR * Math.sin(angle);
-
-        // Major key (outer)
-        const majorGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-        majorGroup.setAttribute('class', 'circle-key');
-        majorGroup.setAttribute('data-key', majorKeys[i]);
-        majorGroup.setAttribute('data-scale', 'major');
-        majorGroup.addEventListener('click', () => circleClick(majorKeys[i], 'major'));
-
-        const circleMajor = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        circleMajor.setAttribute('cx', xOuter);
-        circleMajor.setAttribute('cy', yOuter);
-        circleMajor.setAttribute('r', '18');
-        circleMajor.setAttribute('fill', majorKeys[i] === activeMajor ? 'var(--accent-orange)' : '#333');
-        circleMajor.setAttribute('stroke', majorKeys[i] === activeMajor ? 'var(--primary)' : '#555');
-        circleMajor.setAttribute('stroke-width', majorKeys[i] === activeMajor ? '3' : '1.5');
-        majorGroup.appendChild(circleMajor);
-
-        const textMajor = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        textMajor.setAttribute('x', xOuter);
-        textMajor.setAttribute('y', yOuter + 4);
-        textMajor.setAttribute('text-anchor', 'middle');
-        textMajor.setAttribute('fill', '#fff');
-        textMajor.setAttribute('font-family', 'JetBrains Mono, monospace');
-        textMajor.setAttribute('font-weight', '700');
-        textMajor.setAttribute('font-size', '12');
-        textMajor.textContent = majorKeys[i];
-        majorGroup.appendChild(textMajor);
-
-        svg.appendChild(majorGroup);
-
-        // Minor key (inner)
-        const minorGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-        minorGroup.setAttribute('class', 'circle-key');
-        minorGroup.setAttribute('data-key', minorKeys[i]);
-        minorGroup.setAttribute('data-scale', 'minor');
-        minorGroup.addEventListener('click', () => circleClick(minorKeys[i], 'minor'));
-
-        const circleMinor = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        circleMinor.setAttribute('cx', xInner);
-        circleMinor.setAttribute('cy', yInner);
-        circleMinor.setAttribute('r', '15');
-        circleMinor.setAttribute('fill', minorKeys[i] === activeMinor ? 'var(--accent-teal)' : '#2a2a2a');
-        circleMinor.setAttribute('stroke', minorKeys[i] === activeMinor ? 'var(--primary)' : '#555');
-        circleMinor.setAttribute('stroke-width', minorKeys[i] === activeMinor ? '3' : '1.5');
-        minorGroup.appendChild(circleMinor);
-
-        const textMinor = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        textMinor.setAttribute('x', xInner);
-        textMinor.setAttribute('y', yInner + 4);
-        textMinor.setAttribute('text-anchor', 'middle');
-        textMinor.setAttribute('fill', '#ddd');
-        textMinor.setAttribute('font-family', 'JetBrains Mono, monospace');
-        textMinor.setAttribute('font-weight', '600');
-        textMinor.setAttribute('font-size', '10');
-        textMinor.textContent = minorKeys[i] + 'm';
-        minorGroup.appendChild(textMinor);
-
-        svg.appendChild(minorGroup);
+        const xOuter = centerX + outerR * Math.cos(angle), yOuter = centerY + outerR * Math.sin(angle);
+        const xInner = centerX + innerR * Math.cos(angle), yInner = centerY + innerR * Math.sin(angle);
+        // major
+        const gMaj = document.createElementNS('http://www.w3.org/2000/svg','g');
+        gMaj.setAttribute('class','circle-key'); gMaj.setAttribute('data-key',majorKeys[i]); gMaj.setAttribute('data-scale','major');
+        gMaj.addEventListener('click', () => circleClick(majorKeys[i], 'major'));
+        const cMaj = document.createElementNS('http://www.w3.org/2000/svg','circle');
+        cMaj.setAttribute('cx',xOuter); cMaj.setAttribute('cy',yOuter); cMaj.setAttribute('r','18');
+        cMaj.setAttribute('fill', majorKeys[i] === activeMajor ? 'var(--accent-orange)' : '#333');
+        cMaj.setAttribute('stroke', majorKeys[i] === activeMajor ? 'var(--primary)' : '#555');
+        cMaj.setAttribute('stroke-width', majorKeys[i] === activeMajor ? '3' : '1.5');
+        gMaj.appendChild(cMaj);
+        const tMaj = document.createElementNS('http://www.w3.org/2000/svg','text');
+        tMaj.setAttribute('x',xOuter); tMaj.setAttribute('y',yOuter+4); tMaj.setAttribute('text-anchor','middle');
+        tMaj.setAttribute('fill','#fff'); tMaj.setAttribute('font-family','JetBrains Mono, monospace'); tMaj.setAttribute('font-weight','700'); tMaj.setAttribute('font-size','12');
+        tMaj.textContent = majorKeys[i]; gMaj.appendChild(tMaj);
+        svg.appendChild(gMaj);
+        // minor
+        const gMin = document.createElementNS('http://www.w3.org/2000/svg','g');
+        gMin.setAttribute('class','circle-key'); gMin.setAttribute('data-key',minorKeys[i]); gMin.setAttribute('data-scale','minor');
+        gMin.addEventListener('click', () => circleClick(minorKeys[i], 'minor'));
+        const cMin = document.createElementNS('http://www.w3.org/2000/svg','circle');
+        cMin.setAttribute('cx',xInner); cMin.setAttribute('cy',yInner); cMin.setAttribute('r','15');
+        cMin.setAttribute('fill', minorKeys[i] === activeMinor ? 'var(--accent-teal)' : '#2a2a2a');
+        cMin.setAttribute('stroke', minorKeys[i] === activeMinor ? 'var(--primary)' : '#555');
+        cMin.setAttribute('stroke-width', minorKeys[i] === activeMinor ? '3' : '1.5');
+        gMin.appendChild(cMin);
+        const tMin = document.createElementNS('http://www.w3.org/2000/svg','text');
+        tMin.setAttribute('x',xInner); tMin.setAttribute('y',yInner+4); tMin.setAttribute('text-anchor','middle');
+        tMin.setAttribute('fill','#ddd'); tMin.setAttribute('font-family','JetBrains Mono, monospace'); tMin.setAttribute('font-weight','600'); tMin.setAttribute('font-size','10');
+        tMin.textContent = minorKeys[i]+'m'; gMin.appendChild(tMin);
+        svg.appendChild(gMin);
       }
-
-      // Update active info text
-      if (state.scale === 'major') {
-        circleActiveInfo.textContent = `Active: ${activeMajor} Major (relative: ${activeMinor}m)`;
-      } else {
-        circleActiveInfo.textContent = `Active: ${activeMinor}m Minor (relative: ${activeMajor})`;
-      }
+      circleActiveInfo.textContent = state.scale === 'major' ? `Active: ${activeMajor} Major (relative: ${activeMinor}m)` : `Active: ${activeMinor}m Minor (relative: ${activeMajor})`;
     }
 
-    // Circle click handler: update state and re-render everything
-    function circleClick(root, scale) {
-      state.root = root;
-      state.scale = scale;
-      state.position = 1;   // reset to first position for clarity
-      render();
-    }
+    function circleClick(root, scale) { state.root = root; state.scale = scale; state.position = 1; render(); }
 
-    // ---------- Fretboard Rendering ----------
-    function render(){
+    function render() {
       refreshActiveStates();
-      drawCircleOfFifths();   // keep circle in sync
-
+      drawCircleOfFifths();
       const rootSemitone = CHROMATIC.indexOf(state.root);
       const boxes = state.scale === 'minor' ? minorBoxesForRoot(state.root) : majorBoxesForRoot(state.root);
       const box = boxes[state.position - 1] || boxes[0];
-
       const scaleLabel = state.scale === 'minor' ? 'Minor' : 'Major';
       const accentColor = state.scale === 'minor' ? 'var(--accent-orange)' : 'var(--accent-teal)';
       shapeTitle.innerHTML = `<span style="color: ${accentColor}">${state.root} ${scaleLabel} — Position ${box.index}</span>`;
       fretRange.textContent = `Frets ${box.start}–${box.end}`;
-
-      // Clear and rebuild SVG
       board.innerHTML = '';
-
       const padLeft = 80, padRight = 40, padTop = 30, padBottom = 40, width = 700;
-      const stringGap = 42;
-      const boardHeight = stringGap * 5;
-
+      const stringGap = 42, boardHeight = stringGap * 5;
       let minF = box.start, maxF = box.end;
-      box.perString.forEach(frets => frets.forEach(f => {
-        if(f < minF) minF = f;
-        if(f > maxF) maxF = f;
-      }));
-      const displayStart = minF - 0.5;
-      const displayEnd = maxF + 0.5;
-      const fretSpan = displayEnd - displayStart;
-      const boardWidth = width - padLeft - padRight;
-      const fretGap = boardWidth / fretSpan;
-
+      box.perString.forEach(frets => frets.forEach(f => { if(f < minF) minF = f; if(f > maxF) maxF = f; }));
+      const displayStart = minF - 0.5, displayEnd = maxF + 0.5;
+      const fretSpan = displayEnd - displayStart, boardWidth = width - padLeft - padRight, fretGap = boardWidth / fretSpan;
       board.setAttribute('viewBox', `0 0 ${width} ${padTop + boardHeight + padBottom}`);
-
       function fretX(fret){ return padLeft + (fret - displayStart) * fretGap; }
       function stringY(idx){ return padTop + idx * stringGap; }
-
-      // Fret lines and numbers
       for(let f = minF; f <= maxF + 1; f++){
-        const x = fretX(f);
-        const isNut = f === 0;
+        const x = fretX(f), isNut = f === 0;
         const line = document.createElementNS('http://www.w3.org/2000/svg','line');
-        line.setAttribute('x1', x);
-        line.setAttribute('x2', x);
-        line.setAttribute('y1', padTop);
-        line.setAttribute('y2', padTop + boardHeight);
-        line.setAttribute('stroke', isNut ? '#c9a14a' : '#444444');
-        line.setAttribute('stroke-width', isNut ? 6 : 2);
+        line.setAttribute('x1',x); line.setAttribute('x2',x); line.setAttribute('y1',padTop); line.setAttribute('y2',padTop+boardHeight);
+        line.setAttribute('stroke', isNut ? '#c9a14a' : '#444444'); line.setAttribute('stroke-width', isNut ? 6 : 2);
         board.appendChild(line);
-
         if(f <= maxF){
           const num = document.createElementNS('http://www.w3.org/2000/svg','text');
-          num.setAttribute('x', x + fretGap/2);
-          num.setAttribute('y', padTop + boardHeight + 22);
-          num.setAttribute('class', 'fret-num');
-          num.textContent = f;
-          board.appendChild(num);
+          num.setAttribute('x', x + fretGap/2); num.setAttribute('y', padTop + boardHeight + 22);
+          num.setAttribute('class','fret-num'); num.textContent = f; board.appendChild(num);
         }
       }
-
-      // Strings and labels
       for(let i = 0; i < 6; i++){
         const y = stringY(i);
         const line = document.createElementNS('http://www.w3.org/2000/svg','line');
-        line.setAttribute('x1', padLeft);
-        line.setAttribute('x2', width - padRight);
-        line.setAttribute('y1', y);
-        line.setAttribute('y2', y);
-        line.setAttribute('stroke', '#e0e0e0');
-        line.setAttribute('stroke-width', i >= 4 ? 3.5 : (i===0?1.8:2.5));
+        line.setAttribute('x1',padLeft); line.setAttribute('x2',width-padRight); line.setAttribute('y1',y); line.setAttribute('y2',y);
+        line.setAttribute('stroke','#e0e0e0'); line.setAttribute('stroke-width', i >= 4 ? 3.5 : (i===0?1.8:2.5));
         board.appendChild(line);
-
         const label = document.createElementNS('http://www.w3.org/2000/svg','text');
-        label.setAttribute('x', padLeft - 16);
-        label.setAttribute('y', y + 5);
-        label.setAttribute('class', 'string-label');
-        label.textContent = STRING_NAMES[i];
-        board.appendChild(label);
+        label.setAttribute('x',padLeft-16); label.setAttribute('y',y+5); label.setAttribute('class','string-label');
+        label.textContent = STRING_NAMES[i]; board.appendChild(label);
       }
-
-      // Note circles
       const rootColor = state.scale === 'minor' ? '#e8743b' : '#4a9d8f';
       for(let s = 0; s < 6; s++){
         box.perString[s].forEach(fret => {
-          const sem = noteSemitoneAt(s, fret);
-          const isRoot = sem === rootSemitone;
-          const x = fretX(fret) + fretGap/2;
-          const y = stringY(s);
-
+          const sem = noteSemitoneAt(s, fret), isRoot = sem === rootSemitone;
+          const x = fretX(fret) + fretGap/2, y = stringY(s);
           const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
-          circle.setAttribute('cx', x);
-          circle.setAttribute('cy', y);
-          circle.setAttribute('r', 13);
-          circle.setAttribute('fill', isRoot ? rootColor : 'rgba(255, 255, 255, 0.85)');
-          circle.setAttribute('class', 'note-circle');
+          circle.setAttribute('cx',x); circle.setAttribute('cy',y); circle.setAttribute('r',13);
+          circle.setAttribute('fill', isRoot ? rootColor : 'rgba(255, 255, 255, 0.85)'); circle.setAttribute('class','note-circle');
           board.appendChild(circle);
-
           const text = document.createElementNS('http://www.w3.org/2000/svg','text');
-          text.setAttribute('x', x);
-          text.setAttribute('y', y + 1);
-          text.setAttribute('class', 'note-text');
-          text.textContent = noteName(sem);
-          board.appendChild(text);
+          text.setAttribute('x',x); text.setAttribute('y',y+1); text.setAttribute('class','note-text');
+          text.textContent = noteName(sem); board.appendChild(text);
         });
       }
-
-      // Note strip
       const scaleNotes = (state.scale === 'minor' ? MINOR_PENT : MAJOR_PENT).map(iv => noteName(rootSemitone + iv));
       noteStrip.innerHTML = '';
       scaleNotes.forEach(n => {
         const chip = document.createElement('span');
         const classes = ['note-badge'];
-        if(n === state.root) {
-          classes.push('root');
-          classes.push(state.scale === 'minor' ? 'accent-orange' : 'accent-teal');
-        }
-        chip.className = classes.join(' ');
-        chip.textContent = n;
-        noteStrip.appendChild(chip);
+        if(n === state.root) { classes.push('root'); classes.push(state.scale === 'minor' ? 'accent-orange' : 'accent-teal'); }
+        chip.className = classes.join(' '); chip.textContent = n; noteStrip.appendChild(chip);
       });
     }
 
-    // Initial render
+    // ==================== Chromatic Tuner ====================
+    const tunerCanvas = document.getElementById('tunerCanvas');
+    const tunerCtx = tunerCanvas.getContext('2d');
+    const tunerNoteDisplay = document.getElementById('tunerNote');
+    const tunerCentsDisplay = document.getElementById('tunerCents');
+    const tunerStatus = document.getElementById('tuner-status');
+    const startBtn = document.getElementById('tunerStartBtn');
+    const stopBtn = document.getElementById('tunerStopBtn');
+
+    let audioContext = null, analyser = null, microphone = null, tunerRunning = false;
+    let animationId = null;
+    const noteStrings = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+
+    function drawGauge(cents) {
+      const w = tunerCanvas.width, h = tunerCanvas.height;
+      const centerX = w/2, centerY = h/2, radius = 100;
+      tunerCtx.clearRect(0, 0, w, h);
+      tunerCtx.beginPath();
+      tunerCtx.arc(centerX, centerY, radius, 0, 2*Math.PI);
+      tunerCtx.strokeStyle = '#333';
+      tunerCtx.lineWidth = 8;
+      tunerCtx.stroke();
+      for (let tick = -50; tick <= 50; tick += 10) {
+        const angle = (tick / 50) * (Math.PI / 2) + Math.PI/2;
+        const innerR = radius - 12, outerR = radius + 6;
+        const x1 = centerX + innerR * Math.cos(angle), y1 = centerY - innerR * Math.sin(angle);
+        const x2 = centerX + outerR * Math.cos(angle), y2 = centerY - outerR * Math.sin(angle);
+        tunerCtx.beginPath();
+        tunerCtx.moveTo(x1, y1); tunerCtx.lineTo(x2, y2);
+        tunerCtx.strokeStyle = tick === 0 ? '#fff' : '#666';
+        tunerCtx.lineWidth = tick === 0 ? 2 : 1;
+        tunerCtx.stroke();
+      }
+      const normalized = Math.max(-50, Math.min(50, cents));
+      const angle = (normalized / 50) * (Math.PI / 2) + Math.PI/2;
+      const needleLength = radius - 20;
+      const needleX = centerX + needleLength * Math.cos(angle);
+      const needleY = centerY - needleLength * Math.sin(angle);
+      tunerCtx.beginPath();
+      tunerCtx.moveTo(centerX, centerY);
+      tunerCtx.lineTo(needleX, needleY);
+      const absCents = Math.abs(cents);
+      let color;
+      if (absCents <= 5) color = '#10b981';
+      else if (absCents <= 15) color = '#f59e0b';
+      else color = '#ef4444';
+      tunerCtx.strokeStyle = color;
+      tunerCtx.lineWidth = 4;
+      tunerCtx.stroke();
+      tunerCtx.beginPath();
+      tunerCtx.arc(centerX, centerY, 5, 0, 2*Math.PI);
+      tunerCtx.fillStyle = '#fff';
+      tunerCtx.fill();
+    }
+
+    function autoCorrelate(buf, sampleRate) {
+      const SIZE = buf.length;
+      let rms = 0;
+      for (let i = 0; i < SIZE; i++) { const val = buf[i]; rms += val * val; }
+      rms = Math.sqrt(rms / SIZE);
+      if (rms < 0.01) return -1;
+      let r1 = 0, r2 = SIZE - 1, thres = 0.2;
+      for (let i = 0; i < SIZE/2; i++) if (Math.abs(buf[i]) < thres) { r1 = i; break; }
+      for (let i = 1; i < SIZE/2; i++) if (Math.abs(buf[SIZE - i]) < thres) { r2 = SIZE - i; break; }
+      const newBuf = buf.slice(r1, r2);
+      const N = newBuf.length;
+      const c = new Array(N).fill(0);
+      for (let lag = 0; lag < N; lag++) {
+        let sum = 0;
+        for (let i = 0; i < N - lag; i++) sum += newBuf[i] * newBuf[i + lag];
+        c[lag] = sum;
+      }
+      let d = 0; while (c[d] > c[d+1]) d++;
+      let maxval = -1, maxpos = -1;
+      for (let i = d; i < N; i++) {
+        if (c[i] > maxval) { maxval = c[i]; maxpos = i; }
+      }
+      let T0 = maxpos;
+      const x1 = c[T0-1], x2 = c[T0], x3 = c[T0+1];
+      const a = (x1 + x3 - 2*x2) / 2;
+      const b = (x3 - x1) / 2;
+      if (a) T0 -= b / (2*a);
+      return sampleRate / T0;
+    }
+
+    function updateTuner() {
+      if (!tunerRunning || !analyser) return;
+      const bufferLength = analyser.fftSize;
+      const dataArray = new Float32Array(bufferLength);
+      analyser.getFloatTimeDomainData(dataArray);
+      const freq = autoCorrelate(dataArray, audioContext.sampleRate);
+      if (freq > 20 && freq < 2000) {
+        const A4 = 440;
+        const semitone = 12 * Math.log2(freq / A4);
+        const rounded = Math.round(semitone);
+        const noteIndex = mod(rounded, 12);
+        const note = noteStrings[noteIndex];
+        const cents = (semitone - rounded) * 100;
+        tunerNoteDisplay.textContent = note;
+        tunerCentsDisplay.textContent = `${Math.round(cents)} ¢`;
+        drawGauge(cents);
+      } else {
+        tunerNoteDisplay.textContent = '--';
+        tunerCentsDisplay.textContent = '0 ¢';
+        drawGauge(0);
+      }
+      animationId = requestAnimationFrame(updateTuner);
+    }
+
+    async function startTuner() {
+      if (tunerRunning) return;
+      try {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        microphone = audioContext.createMediaStreamSource(stream);
+        analyser = audioContext.createAnalyser();
+        analyser.fftSize = 2048;
+        microphone.connect(analyser);
+        tunerRunning = true;
+        tunerStatus.textContent = 'Running';
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+        updateTuner();
+      } catch (err) {
+        alert('Microphone access denied or not available.');
+        console.error(err);
+      }
+    }
+
+    function stopTuner() {
+      if (!tunerRunning) return;
+      tunerRunning = false;
+      if (animationId) cancelAnimationFrame(animationId);
+      if (microphone) microphone.disconnect();
+      if (audioContext) audioContext.close();
+      audioContext = null; analyser = null; microphone = null;
+      tunerStatus.textContent = 'Stopped';
+      tunerNoteDisplay.textContent = '--';
+      tunerCentsDisplay.textContent = '0 ¢';
+      drawGauge(0);
+      startBtn.disabled = false;
+      stopBtn.disabled = true;
+    }
+
+    startBtn.addEventListener('click', startTuner);
+    stopBtn.addEventListener('click', stopTuner);
+    stopBtn.disabled = true;
+    drawGauge(0);
+
+    // ==================== Initialize ====================
     render();
   </script>
 </body>
